@@ -3,7 +3,7 @@ import "../styles/assistenteModal.css";
 import botIcon from "../img/tedi.png";
 import botIcon2 from "../img/tedi2.png";
 
-const API_URL = "http://localhost:5000";
+const API_URL = "https://api-teste-z0k3.onrender.com";
 
 export default function AssistenteModal({ isOpen, onClose }) {
   const [messages, setMessages] = useState([]);
