@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../styles/EmpresaSection.css";
-import imagem1 from "../img/Tecnoagil1.jpg";
-import imagem2 from "../img/Tecnoagil2.jpg";
-import imagem3 from "../img/monitoramento.jpg";
+import imagem1 from "../img/Tecnoagil1.webp";
+import imagem2 from "../img/Tecnoagil2.webp";
+import imagem3 from "../img/monitoramento.webp";
 import useFadeDirection from "../hooks/useFadeOnScroll"; // novo hook
 
 const EmpresaSection = () => {

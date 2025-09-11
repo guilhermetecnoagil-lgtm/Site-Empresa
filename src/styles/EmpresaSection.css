@@ -3,7 +3,7 @@
    =========================== */
 .empresa-section {
   position: relative;
-  background: url("../img/Empresa.jpg");
+  background: url("../img/Empresa.webp");
   background-size: 100%; /* controle de zoom */
   background-repeat: no-repeat;
   background-position: center;

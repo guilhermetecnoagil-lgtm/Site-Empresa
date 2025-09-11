@@ -3,9 +3,9 @@ import React, { useState, useEffect, useRef } from "react";
 
 // Estilos e imagens da seção
 import "../styles/EmpresaSectionMobile.css";
-import imagem1 from "../img/Tecnoagil1.jpg";
-import imagem2 from "../img/Tecnoagil2.jpg";
-import imagem3 from "../img/Tecnoagil2.jpg";
+import imagem1 from "../img/Tecnoagil1.webp";
+import imagem2 from "../img/Tecnoagil2.webp";
+import imagem3 from "../img/Tecnoagil2.webp";
 
 // Componente principal da seção da empresa
 const EmpresaSection = () => {

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import ted from "../img/tedi.png";
+import ted from "../img/tedThink.webp";
 
 /**
  * FAB com tooltip random, pulse contínuo e fala vermelha
@@ -84,11 +84,11 @@ export default function FloatingFabTracker({ onClick, visible = true }) {
     const btnEl = document.createElement("button");
     btnEl.className = "fab-tracker fab-visible";
     btnEl.setAttribute("aria-label", "Contato / Assistente");
-    const BTN_SIZE = 80;
+    const BTN_SIZE = 100;
     Object.assign(btnEl.style, {
       position: "absolute",
-      width: `${BTN_SIZE}px`,
-      height: `${BTN_SIZE}px`,
+      width: `0px`,
+      height: `0px`,
       borderRadius: "50%",
       border: "0",
       cursor: "pointer",

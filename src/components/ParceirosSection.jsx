@@ -2,19 +2,19 @@ import React, { useEffect, useRef } from "react";
 import "../styles/ParceirosSection.css";
 
 // Logos dos parceiros (todas em uma faixa só)
-import boticario from "../img/LogoBoticario.png";
-import samur from "../img/LogoSamur.png";
-import labo from "../img/LogoLabo.png";
-import cincal from "../img/CincalLogo.png";
-import jrlogo from "../img/JRLogo.png";
-import roda from "../img/RodaleveLogo.png";
-import sebrae from "../img/SebraeLogo.png";
-import sonia from "../img/TiaSoniaLogo.png";
-import sudoeste from "../img/TvSudoesteLogo.png";
-import radio from "../img/RadioClubeLogo.png";
-import luvep from "../img/LuvepLogo.png";
-import band from "../img/BandFmLogo.png";
-import bruno from "../img/JBrunoLogo.png";
+import boticario from "../img/LogoBoticario.webp";
+import samur from "../img/LogoSamur.webp";
+import labo from "../img/LogoLabo.webp";
+import cincal from "../img/CincalLogo.webp";
+import jrlogo from "../img/JRLogo.webp";
+import roda from "../img/RodaleveLogo.webp";
+import sebrae from "../img/SebraeLogo.webp";
+import sonia from "../img/TiaSoniaLogo.webp";
+import sudoeste from "../img/TvSudoesteLogo.webp";
+import radio from "../img/RadioClubeLogo.webp";
+import luvep from "../img/LuvepLogo.webp";
+import band from "../img/BandFmLogo.webp";
+import bruno from "../img/JBrunoLogo.webp";
 
 const parceiros = [
   { nome: "O Boticário", logo: boticario },

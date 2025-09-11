@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/QualidadeSection.css";
-import imagemPainel from "../img/Logo.png";
+import imagemPainel from "../img/Logo.webp";
 
 // Ícones
 import { FaUserTie, FaCarSide, FaMedal } from "react-icons/fa";

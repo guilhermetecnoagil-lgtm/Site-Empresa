@@ -1,12 +1,12 @@
 // Hooks do React e estilos/imagens usados na seção
 import React, { useEffect, useRef, useState } from "react";
 import "../styles/MostruarioSection.css";
-import casaImg from "../img/casa.png";
-import monitoramento from "../img/monitoramento.jpg";
-import automacao from "../img/Automacao.jpg";
-import controle from "../img/ControleDeAcesso.jpg";
-import solar from "../img/PainelSolar.jpg";
-import rastreamento from "../img/RastreamentoVeicular.jpeg";
+import casaImg from "../img/casa.webp";
+import monitoramento from "../img/monitoramento.webp";
+import automacao from "../img/Automacao.webp";
+import controle from "../img/ControleDeAcesso.webp";
+import solar from "../img/PainelSolar.webp";
+import rastreamento from "../img/RastreamentoVeicular.webp";
 import { servicos } from "../data/servicos"; // <— usa o mesmo array
 import { Link } from "react-router-dom";
 

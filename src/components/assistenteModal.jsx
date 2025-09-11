@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "../styles/assistenteModal.css";
-import botIcon from "../img/tedi.png";
-import botIcon2 from "../img/tedi2.png";
+import botIcon from "../img/tedi.webp";
+import botIcon2 from "../img/tedi2.webp";
 
 const API_URL = "https://api-teste-z0k3.onrender.com";
 

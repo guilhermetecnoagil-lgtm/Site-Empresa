@@ -13,7 +13,7 @@ import { auth } from '../firebase/config';
 import { Sun, Moon } from "lucide-react";
 
 // Logomarca
-import Logo from "../img/Logo.png";
+import Logo from "../img/Logo.webp";
 
 const Topbar = () => {
   const [user, setUser] = useState(null);
