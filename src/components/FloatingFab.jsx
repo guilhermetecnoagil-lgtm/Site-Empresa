@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import ted from "../img/tedThink.png";
+import ted from "../img/tedi.png";
 
 /**
  * FAB com tooltip random, pulse contínuo e fala vermelha
@@ -36,7 +36,6 @@ export default function FloatingFabTracker({ onClick, visible = true }) {
         }
         .fab-hidden {
           animation: fab-fade-out 0.3s forwards;
-          pointer-events: none;
         }
         .fab-visible {
           animation: fab-fade-in 0.3s forwards, fab-pulse 1.5s ease-in-out infinite;
@@ -174,11 +173,18 @@ export default function FloatingFabTracker({ onClick, visible = true }) {
   useEffect(() => {
     if (btn) {
       if (visible) {
+        btn.style.visibility = "visible";
+        btn.style.pointerEvents = "auto";
         btn.classList.remove("fab-hidden");
         btn.classList.add("fab-visible");
       } else {
         btn.classList.remove("fab-visible");
         btn.classList.add("fab-hidden");
+        // esconde de verdade depois da animação
+        setTimeout(() => {
+          btn.style.visibility = "hidden";
+          btn.style.pointerEvents = "none";
+        }, 300);
       }
     }
   }, [visible, btn]);

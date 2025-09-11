@@ -58,7 +58,6 @@ export default function AssistenteModal({ isOpen, onClose }) {
     const text = input.trim();
     if (!text || loading) return;
 
-    // Adiciona mensagem do usuário
     setMessages((prev) => [...prev, { from: "user", text }]);
     setInput("");
     setLoading(true);
@@ -86,7 +85,6 @@ export default function AssistenteModal({ isOpen, onClose }) {
         respText ||
         "Desculpe, algo deu errado ao processar a resposta.";
 
-      // Adiciona resposta do bot
       setMessages((prev) => [...prev, { from: "bot", text: payload }]);
     } catch (err) {
       console.error("Erro ao enviar mensagem:", err);
@@ -100,17 +98,21 @@ export default function AssistenteModal({ isOpen, onClose }) {
     }
   };
 
+  const handleSendClick = () => {
+    if (!loading && input.trim()) sendMessage();
+  };
+
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      sendMessage();
+      handleSendClick();
     }
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="assistente-wrapper">
+    <div className="assistente-wrapper" role="dialog" aria-modal="true">
       <div className="assistente-modal" ref={modalRef}>
         {/* Header */}
         <div className="assistente-header">
@@ -147,7 +149,7 @@ export default function AssistenteModal({ isOpen, onClose }) {
           />
           <button
             type="button"
-            onClick={sendMessage}
+            onClick={handleSendClick}
             disabled={loading || !input.trim()}
           >
             {loading ? "Enviando..." : "Enviar"}
