@@ -105,14 +105,14 @@ export default function FloatingFabTracker({ onClick, visible = true }) {
       if (typeof ted === "string" && ted) iconUrl = ted;
       else iconUrl = new URL("../img/tedi.png", import.meta.url).href;
     } catch {
-      iconUrl = "/tedi.png";
+      iconUrl = "/tedThink.webp";
     }
     const img = document.createElement("img");
     img.alt = "";
     img.width = BTN_SIZE;
     img.height = BTN_SIZE;
     img.style.display = "block";
-    img.style.borderRadius = "50%";
+    img.style.borderRadius = "10%";
     img.src = iconUrl;
 
     // tooltip
