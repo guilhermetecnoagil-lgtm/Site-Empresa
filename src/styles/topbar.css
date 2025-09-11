@@ -1,0 +1,204 @@
+/* =============================
+   TOPBAR – versão responsiva corrigida (FINAL)
+   ============================= */
+
+/* Reset local da topbar */
+.topbar * { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* -----------------------------
+   Base (desktop)
+   ----------------------------- */
+.topbar.futuristic-glass {
+  --topbar-h: 64px; /* usado no painel mobile */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 40px;
+  background: var(--bg-topbar);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 30px rgba(255, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(198, 40, 40, 0.2);
+  position: sticky; top: 0; z-index: 1000;
+}
+
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+.topbar-logo { height: 60px; filter: drop-shadow(0 0 4px #ff0000); transition: transform .3s; }
+.topbar-logo:hover { transform: scale(1.05); }
+
+.topbar-title-group { display: flex; flex-direction: column; align-items: flex-start; line-height: 1; font-family: "Serpentine", sans-serif; }
+.topbar-title-group .grupo { font-size: 1.4rem; font-weight: 700; color: var(--text-color); margin-left: 20px; letter-spacing: .5px; }
+.topbar-title-group .tecnoagil { font-size: 1.4rem; font-weight: 700; color: var(--hover-color); margin-left: 20px; letter-spacing: .5px; }
+
+/* Navegação (desktop) */
+.topbar-center { display: flex; align-items: center; gap: 22px; }
+.topbar-center a { color: var(--text-color); text-decoration: none; font-weight: 500; position: relative; transition: color .3s; }
+.topbar-center a:hover { color: var(--hover-color); }
+.topbar-center a::after { content: ""; display: block; height: 2px; background: var(--hover-color); transition: width .3s; width: 0; margin-top: 4px; }
+.topbar-center a:hover::after { width: 100%; }
+
+/* Dropdown – base */
+.dropdown { position: relative; }
+.dropdown-menu {
+  position: absolute; left: 0;
+  top: calc(100% + 8px); /* sem gap que faça “sumir” no hover */
+  background: var(--dropdown-bg);
+  border: 1px solid var(--dropdown-border);
+  box-shadow: 0 0 12px rgba(198, 40, 40, 0.2);
+  border-radius: 10px; display: flex; flex-direction: column;
+  min-width: 180px; padding: 5px 0;
+  opacity: 0; pointer-events: none; transform: translateY(10px);
+  transition: opacity .3s, transform .3s; z-index: 10;
+}
+.dropdown-menu a, .dropdown-menu button {
+  padding: 10px 16px; color: var(--text-color); background: transparent; border: 0;
+  text-align: left; width: 100%; cursor: pointer; font-size: .95rem; white-space: nowrap;
+}
+.dropdown-menu a:hover, .dropdown-menu button:hover { background: var(--hover-bg); color: var(--hover-color); }
+
+/* Botão do dropdown (acessibilidade + mobile) */
+.dropdown-toggle{
+  background: transparent; border: 0; color: var(--text-color);
+  font: inherit; padding: 10px 16px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+  font-weight: 600; /* negrito pedido */
+  margin-top: -5px;
+}
+.dropdown-toggle:hover{ color: var(--hover-color); }
+
+/* Hover abre o dropdown APENAS no desktop + ponte anti-gap */
+@media (min-width: 769px){
+  .dropdown::after{
+    content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 10px;
+  }
+  .dropdown:hover .dropdown-menu,
+  .dropdown-menu:hover { opacity: 1; pointer-events: auto; transform: translateY(0); }
+}
+
+/* Ações à direita (desktop) */
+.topbar-right.social-icons { display: flex; gap: 16px; align-items: center; }
+.social-icons a { color: var(--text-color); font-size: 1.1rem; transition: transform .2s, color .3s; }
+.social-icons a:hover { color: var(--social-icon-hover); transform: scale(1.15); }
+
+.assistant-btn { background: var(--assistant-bg); color: #fff; padding: 8px 18px; border-radius: 25px; font-weight: 700; box-shadow: 0 0 12px rgba(198,40,40,.5); transition: background .3s, box-shadow .3s; }
+.assistant-btn:hover { background: #eee; box-shadow: 0 0 16px rgba(198,40,40,.6); }
+
+.dark-toggle { margin-left: -20px; padding: 6px 30px; border-radius: 20px; border: none; background: transparent; color: var(--text-color); cursor: pointer; font-size: .85rem; font-weight: 700; transition: background .3s, color .3s, border .3s; }
+.dark-toggle:hover { color: var(--hover-color); }
+
+/* -----------------------------
+   Botão hambúrguer – centralizado e animado
+   ----------------------------- */
+.menu-toggle{
+  display:none; /* escondido no desktop */
+  align-items:center; justify-content:center;
+  width:40px; height:40px; border-radius:10px;
+  border:1px solid var(--border-color, rgba(255,255,255,.15));
+  background:transparent; color:var(--text-color);
+  cursor:pointer; transition:background .2s, color .2s, border-color .2s;
+  padding:0; line-height:0; position:relative;
+}
+.menu-toggle:hover{ color:var(--hover-color); }
+
+/* 3 barras com o mesmo centro (botão) */
+.menu-toggle .bar,
+.menu-toggle .bar::before,
+.menu-toggle .bar::after{
+  content:"";
+  position:absolute; left:50%; top:50%;
+  width:22px; height:2px; background: currentColor; border-radius:2px;
+  transform: translate(-50%, -50%);
+  transition: transform .22s ease, opacity .22s ease;
+}
+.menu-toggle .bar::before{ transform: translate(-50%, calc(-50% - 6px)); }
+.menu-toggle .bar::after { transform: translate(-50%, calc(-50% + 6px)); }
+
+/* Ícone vira X quando aberto */
+.topbar.is-open .menu-toggle .bar{ opacity:0; }
+.topbar.is-open .menu-toggle .bar::before{ transform: translate(-50%, -50%) rotate(45deg); }
+.topbar.is-open .menu-toggle .bar::after{  transform: translate(-50%, -50%) rotate(-45deg); }
+
+/* -----------------------------
+   Responsividade
+   ----------------------------- */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .topbar.futuristic-glass { padding: 12px 24px; }
+  .topbar-logo { height: 52px; }
+  .topbar-center { gap: 14px; }
+}
+
+/* ======== MOBILE / COMPACT (até 900px) ======== */
+.mobile-extras{ display: none; }
+
+@media (max-width: 900px) {
+  .topbar.futuristic-glass { padding: 10px 16px; }
+  .topbar-logo { height: 44px; }
+
+  /* mostra o hambúrguer */
+  .menu-toggle {
+    display: flex;
+    margin-right: 20px;
+    margin-left: 20px;
+    border: 0;
+  }
+
+  /* Backdrop clicável (renderizado no JSX quando menuOpen) */
+  .menu-backdrop{
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.35); backdrop-filter: blur(1px);
+    border: 0; padding: 0; margin: 0;
+    z-index: 998; display: block;
+  }
+
+  /* painel deslizante */
+  .topbar-center{
+    position: fixed; top: var(--topbar-h); left: 0; right: 0;
+    background: var(--dropdown-bg);
+    border-bottom: 1px solid var(--dropdown-border);
+    box-shadow: 0 8px 24px rgba(0,0,0,.12);
+    display: flex; flex-direction: column; gap: 12px;
+    padding: 14px 16px;
+    transform: translateY(-120%);
+    opacity: 0; pointer-events: none;
+    transition: transform .25s, opacity .25s;
+    z-index: 999;
+  }
+  .topbar-center a { font-size: .95rem; }
+
+  .topbar.is-open .topbar-center{
+    transform: translateY(0); opacity: 1; pointer-events: auto;
+  }
+
+  /* dropdown dentro do painel */
+  .dropdown{ width: 90px; margin-top: -10px; }
+  .dropdown-menu{
+    position: static; border: 0; box-shadow: none; padding: 6px 0 0;
+    opacity: 0; pointer-events: none; transform: none;
+    max-height: 0; overflow: hidden; transition: opacity .2s, max-height .2s ease;
+  }
+  .dropdown.is-dd-open .dropdown-menu{ opacity: 1; pointer-events: auto; max-height: 600px; }
+
+  /* ícones e tema vão para dentro do menu */
+  .topbar-right.social-icons { display: none; }
+  .mobile-extras{
+    display: flex; flex-direction: column; gap: 12px;
+    margin-top: 8px; padding-top: 12px; border-top: 1px solid var(--dropdown-border);
+  }
+  .mobile-extras .social-icons{ display: flex; align-items: center; gap: 14px; font-size: 1.2rem; }
+  .mobile-extras .dark-toggle{ width: 100%; justify-content: center; margin-top: -5px; }
+}
+
+/* Garantias de DESKTOP (≥901px) */
+@media (min-width: 901px){
+  .menu-toggle{ display: none !important; }
+  .topbar-center{
+    position: static !important; transform: none !important;
+    opacity: 1 !important; pointer-events: auto !important;
+    display: flex !important; flex-direction: row !important; gap: 22px !important;
+    box-shadow: none !important; border: 0 !important; padding: 0 !important;
+  }
+  .topbar-right.social-icons{ display: flex !important; }
+  .mobile-extras, .menu-backdrop{ display: none !important; }
+}
+

@@ -1,0 +1,33 @@
+/* ===== Globais de responsividade ===== */
+html, body { max-width: 100%; }
+
+/* Evitar 100vw que causa scroll horizontal */
+section, .section, .site-grid, .servicos-section, .mostruario-section,
+.qualidade-section, .parceiros-section, .empresa-section {
+  width: 100%; /* em vez de 100vw */
+}
+
+/* Imagens sempre fluídas */
+img { max-width: 100%; height: auto; display: block; }
+
+/* Container padrão (reuso) */
+.container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 clamp(12px, 4vw, 40px); }
+
+/* Tipografia fluída */
+h1 { font-size: clamp(1.6rem, 4vw, 2.8rem); }
+h2 { font-size: clamp(1.3rem, 3vw, 2.2rem); }
+p, li { font-size: clamp(0.95rem, 1.2vw, 1.1rem); line-height: 1.6; }
+
+/* Utilidades */
+.stack-md { display: grid; gap: clamp(16px, 3vw, 32px); }
+
+/* Breakpoints */
+@media (max-width: 1024px) {
+  .hide-on-laptop { display: none !important; }
+}
+@media (max-width: 900px) {
+  .col-2-stack { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+}
+@media (max-width: 600px) {
+  .pad-mobile { padding: 56px 16px !important; }
+}

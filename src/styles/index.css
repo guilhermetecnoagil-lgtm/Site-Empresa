@@ -1,0 +1,184 @@
+/* Reset global */
+* {
+  margin: 0;
+  padding: 0;
+  
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+html, body {
+  width: 100%;
+  min-height: 100%;   /* permite crescer conforme o conteúdo */
+  background-color: var(--bg-base);
+  overflow-x: hidden; /* só bloqueia rolagem lateral */
+}
+
+
+/* Global - default light theme */
+/* === TEMA CLARO (PADRÃO) === */
+:root {
+  /* Fundo da Topbar (barra superior do site) */
+  --bg-topbar: #fcfcfc;
+
+  /* Fundo base translúcido usado em seções com overlay */
+  --bg-base: rgba(255, 255, 255, 0.8);
+
+  /*bg para seção de parceiros*/
+  --bg-parceiros:#c2bbbb;
+
+  /* Fundo de contraste para seções alternadas (ex: qualidade, serviços...) */
+  --bg-contraste: #E0E0E0;
+
+  /* Fundo de cartões (ex: cards da empresa, qualidade, popup...) */
+  --bg-card: #fff;
+
+  /* Cor principal de texto */
+  --text-color: #111;
+
+  /* Cor secundária de texto (usado em descrições, subtítulos) */
+  --text-secondary: #222;
+  /*Cor do botão dos serviços*/
+ --barra-bg:#c5c5c5;
+
+ --barra-bg-hover:#a7a6a6;
+  /* Cor de destaque (links, botões hover, indicadores) */
+  --hover-color: #c62828;
+
+  /* Fundo usado em hover de menus e botões */
+  --hover-bg: #f5f5f5;
+
+  /* Fundo dos dropdowns */
+  --dropdown-bg: #fff;
+
+  /* Cor da borda do dropdown */
+  --dropdown-border: #c62828;
+
+  /* Cor do botão do assistente */
+  --assistant-bg: #c62828;
+
+  /* Hover do botão do assistente */
+  --assistant-bg-hover: #1e1e1e;
+
+  /* Hover dos ícones de redes sociais */
+  --social-icon-hover: #c62828;
+
+  /* Cor padrão de bordas suaves */
+  --border-color: #ccc;
+
+  /* Cor primária global do tema */
+  --primary: #c62828;
+}
+
+
+/* === TEMA ESCURO (APLICADO COM: <body data-theme="dark">) === */
+[data-theme="dark"] {
+  /* Fundo da Topbar em modo escuro */
+  --bg-topbar: #111;
+
+  /* Fundo base translúcido escuro */
+  --bg-base: rgb(0, 0, 0, 0.93);
+--bg-parceiros: rgb(0, 0, 0, 0.93);
+  /* Fundo de contraste para seções alternadas */
+  --bg-contraste:  #222;
+
+  /* Fundo dos cartões escuro */
+  --bg-card: #1a1a1a;
+
+  /* Cor principal de texto clara */
+  --text-color: #f5f5f5;
+
+  /* Cor secundária de texto esmaecida */
+  --text-secondary: #aaa;
+
+  /* Cor de destaque permanece igual para consistência */
+  --hover-color: #c62828;
+
+  /* Fundo de hover escuro */
+  --hover-bg: #1e1e1e;
+  /*Cor do botão dos serviços*/
+ --barra-bg:#303030;
+
+ --barra-bg-hover:#7a7a7a;
+
+  /* Dropdown escuro */
+  --dropdown-bg: #1a1a1a;
+
+  /* Borda do dropdown */
+  --dropdown-border: #c62828;
+
+  /* Botão do assistente */
+  --assistant-bg: #c62828;
+
+  /* Hover do botão do assistente em dark mode */
+  --assistant-bg-hover: #f5f5f5;
+
+  /* Hover de ícones sociais */
+  --social-icon-hover: #c62828;
+
+  /* Cor de borda escura */
+  --border-color: #555;
+
+  /* Cor primária mantém o padrão */
+  --primary: #c62828;
+}
+
+
+
+
+
+
+
+@font-face {
+  font-family: "Serpentine";
+  src: url("../fonts/serpentine-bold.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+
+/* Scrollbar geral */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Fundo da barra (track) */
+::-webkit-scrollbar-track {
+  background: #1e1e1e; /* fundo estilo VS Code */
+}
+
+/* Alça da barra (thumb) */
+::-webkit-scrollbar-thumb {
+  background-color: #3a3f4b; /* cinza-azulado */
+  border-radius: 10px;
+}
+
+/* Hover da alça */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #4b5261;
+}
+
+/* Botões (setas) */
+::-webkit-scrollbar-button {
+  height: 12px;
+  background-color: #2c2c2c;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 6px;
+}
+
+/* Seta pra cima (parte superior da scrollbar) */
+::-webkit-scrollbar-button:single-button:vertical:decrement {
+  background-image: url("data:image/svg+xml,%3Csvg width='6' height='4' viewBox='0 0 6 4' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23ccc' d='M0 4l3-4 3 4z'/%3E%3C/svg%3E");
+}
+
+/* Seta pra baixo (parte inferior da scrollbar) */
+::-webkit-scrollbar-button:single-button:vertical:increment {
+  background-image: url("data:image/svg+xml,%3Csvg width='6' height='4' viewBox='0 0 6 4' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23ccc' d='M0 0l3 4 3-4z'/%3E%3C/svg%3E");
+}
+
+/* Hover nas setas */
+::-webkit-scrollbar-button:hover {
+  background-color: #3a3f4b;
+}
+/* ===================== EFEITO FADE-SCROLL ===================== */

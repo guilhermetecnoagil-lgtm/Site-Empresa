@@ -1,0 +1,350 @@
+/* ===========================
+   Seção de serviços (container)
+   =========================== */
+.servicos-section {
+  width: 100vw;
+  padding: 80px 40px;
+  background-color: var(--bg-contraste);
+  display: flex;
+  justify-content: center;
+ 
+}
+
+/* Container interno */
+.servicos-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  width: 100%;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+
+/* Coluna de texto */
+.servicos-texto {
+  flex: 1 1 450px;
+}
+
+/* Índice 01 / 02 */
+.servicos-indice {
+  color: var(--hover-color);
+  font-weight: bold;
+  font-size: 1rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* Título e descrição */
+.servicos-titulo {
+  color: var(--text-color);
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.servicos-descricao {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+/* Barra de abas */
+.barra-servicos {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.barra-item {
+  position: relative;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 5px;
+  background-color: var(--barra-bg);
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--text-color);
+  transition: background-color 0.3s;
+}
+
+.barra-item:hover {
+  background-color: var(--barra-bg-hover);
+}
+
+.barra-item.ativo {
+  background-color: var(--hover-color);
+  color: #fff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+}
+
+/* Progresso (dentro da barra-item) */
+.barra-progresso {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background-color: #fff;
+  border-radius: 0 0 8px 8px;
+  transition: width 0.1s linear;
+  width: 0%;
+}
+
+/* Coluna de imagem com fade suave */
+.servicos-imagem {
+  position: relative;
+  flex: 1 1 450px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+/* Imagem com efeito de transição */
+.imagem-servico {
+  max-width: 500px;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  pointer-events: none;
+}
+
+/* Ativa a imagem (fade-in) */
+.imagem-servico.fade-in {
+  opacity: 1;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+/* Desativa a imagem (fade-out) */
+.imagem-servico.fade-out {
+  opacity: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ===========================
+   Responsividade
+   =========================== */
+@media (max-width: 768px) {
+  .servicos-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .barra-servicos {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .barra-item {
+    width: 100%;
+  }
+
+  .servicos-texto,
+  .servicos-imagem {
+    flex: 1 1 100%;
+  }
+}
+.btn-saiba-mais {
+  margin-top: 450px;
+  padding: 10px 20px;
+  background-color: var(--hover-color, #e60000);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+}
+
+.btn-saiba-mais:hover {
+  background-color: #910000;
+}
+
+/* ===================================================
+   MOBILE – aprimoramentos progressivos
+   =================================================== */
+
+/* <= 768px: empilha, ajusta tipografia e alturas */
+@media (max-width: 768px) {
+  .servicos-section {
+    padding: 48px 16px;
+  }
+
+  .servicos-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 28px;
+    max-width: 680px; /* melhora leitura em celulares grandes */
+  }
+
+  .servicos-texto {
+    flex: 1 1 auto;
+  }
+
+  .servicos-indice {
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+  }
+
+  .servicos-titulo {
+    font-size: clamp(1.6rem, 6.2vw, 2rem);
+    line-height: 1.2;
+    margin-bottom: 14px;
+  }
+
+  .servicos-descricao {
+    font-size: clamp(1rem, 3.8vw, 1.05rem);
+    line-height: 1.7;
+    margin-bottom: 20px;
+    text-wrap: pretty;
+  }
+
+  /* Abas: clicáveis e com boa área de toque */
+  .barra-servicos {
+    gap: 12px;
+  }
+  .barra-item {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 1rem;
+    border-radius: 10px;
+  }
+  .barra-item.ativo {
+    box-shadow: 0 0 0 2px rgba(255,255,255,.12) inset;
+  }
+
+  /* Imagem: deixa de ser absoluta para não estourar layout */
+  .servicos-imagem {
+    flex: 1 1 auto;
+    min-height: 260px;          /* altura segura no mobile */
+  }
+  .imagem-servico {
+    position: relative;         /* era absolute */
+    max-width: 100%;
+    width: 100%;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity .35s ease, transform .35s ease;
+  }
+  .imagem-servico.fade-in {
+    opacity: 1;
+    transform: translateY(0);
+    z-index: 1;
+  }
+  .imagem-servico.fade-out {
+    opacity: 0;
+    z-index: 0;
+  }
+
+  /* Botão: ocupa largura toda e sem margin-top gigante */
+  .btn-saiba-mais {
+    margin-top: 16px;          /* substitui os 450px */
+    width: 100%;
+    padding: 14px 18px;
+    font-size: 1rem;
+    border-radius: 10px;
+  }
+}
+
+/* <= 560px: barras viram carrossel horizontal, imagem mais compacta */
+@media (max-width: 560px) {
+  /* Abas com rolagem horizontal (quando houver muitas) */
+  .barra-servicos {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 10px;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .barra-servicos::-webkit-scrollbar { display: none; }
+
+  .barra-item {
+    width: auto;                /* vira “pílula” rolável */
+    white-space: nowrap;
+    padding: 10px 14px;
+    border-radius: 999px;
+  }
+
+  .servicos-section {
+    padding: 40px 14px;
+  }
+
+  .servicos-titulo {
+    font-size: clamp(1.4rem, 6.4vw, 1.8rem);
+  }
+
+  .servicos-descricao {
+    font-size: 0.98rem;
+  }
+
+  .servicos-imagem {
+    min-height: 220px;
+  }
+}
+/* Por padrão esconde o botão mobile */
+.btn-mobile { display: none; }
+
+
+/* Mobile: mostra só o mobile e esconde o desktop */
+@media (max-width: 768px) {
+  .btn-desktop { display: none !important; }
+  .btn-mobile  { display: block !important; width: 100%; box-sizing: border-box; }
+  .btn-wrap    { margin-top: 16px; }       /* espaço menor no mobile */
+}
+
+/* <= 560px: micro-ajuste se quiser mais conforto */
+@media (max-width: 560px) {
+  .btn-wrap { margin-top: 12px; }
+}
+
+/* <= 400px: micro-ajustes para telas muito estreitas */
+@media (max-width: 400px) {
+  .servicos-section {
+    padding: 32px 12px;
+  }
+
+  .servicos-titulo {
+    font-size: 1.35rem;
+  }
+
+  .barra-item {
+    padding: 9px 12px;
+    font-size: 0.95rem;
+  }
+
+  .servicos-imagem {
+    min-height: 200px;
+  }
+
+  .btn-saiba-mais {
+    padding: 12px 14px;
+    font-size: 0.95rem;
+  }
+}
+
+/* Acessibilidade: reduz animações para quem prefere menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  .imagem-servico {
+    transition: none !important;
+  }
+  .barra-progresso {
+    transition: none !important;
+  }
+}
+
+
+

@@ -1,0 +1,29 @@
+/* contentblock.css */
+
+.content-block {
+  position: relative;
+  background-color: var(--bg-section, #fff);
+  z-index: 0;
+  isolation: isolate; /* impede vazamentos de z-index */
+}
+
+.content-inner {
+ 
+  margin: 0 auto;
+  
+}
+
+/* Gradiente de transição entre seções */
+
+.content-block.has-gradient::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: linear-gradient(to bottom, var(--bg-section), var(--bg-next));
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: normal;
+}

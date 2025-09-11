@@ -1,0 +1,175 @@
+/* ===========================
+   Seção principal (home)
+   =========================== */
+.empresa-section {
+  position: relative;
+  background-size: auto;
+  background-position: center;
+  background: url("../img/Empresa.jpg");
+  color: var(--text-color);
+  /* usa min-height; melhora em mobile com 100svh quando suportado */
+  min-height: 100vh;
+  
+  display: flex;
+  align-items: center;
+  width: 100vw;
+  justify-content: center;
+}
+
+/* opcional: melhora viewport em mobile modernos */
+@supports (height: 100svh) {
+  .empresa-section { min-height: 100svh; }
+}
+
+/* Camada de overlay */
+.empresa-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--bg-base);
+  z-index: 1;
+  opacity: 1;
+}
+
+/* Conteúdo acima do overlay */
+.empresa-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  max-width: 1300px;
+  gap: 24px;
+}
+
+/* Bloco de texto */
+.empresa-text {
+  max-width: 550px;
+}
+
+.empresa-text h1 {
+  font-size: 2.8rem;
+  font-weight: bold;
+  color: var(--text-color);
+  font-family: "Serpentine";
+  margin-bottom: 20px;
+}
+
+.empresa-text p {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+/* Botão CTA */
+.empresa-btn {
+  padding: 12px 30px;
+  font-size: 1rem;
+  background-color: transparent;
+  color: var(--text-color);
+  border: 2px solid var(--hover-color);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.empresa-btn:hover {
+  background-color: var(--hover-color);
+  color: #fff;
+}
+
+/* Área dos cartões flutuantes */
+.empresa-floating {
+  position: relative;
+  flex: 1;
+  height: clamp(260px, 45vw, 400px);
+}
+
+/* ===========================
+   Cartões flutuantes (consolidado)
+   =========================== */
+.empresa-card {
+  position: absolute;
+  width: clamp(220px, 40vw, 400px);
+  border-radius: 12px;
+ 
+  box-shadow: 0 0 20px rgba(198, 40, 40, 0.3);
+  transform: perspective(1000px) rotateY(-10deg);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, z-index 0.3s ease;
+  border: 1px solid rgba(198, 40, 40, 0.5);
+  background-color: var(--bg-card);
+  cursor: pointer;
+}
+
+.empresa-card img {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+}
+
+/* Hover e ativo */
+.empresa-card:hover {
+  transform: perspective(1000px) rotateY(-5deg) scale(1.03);
+  box-shadow: 0 0 25px rgba(198, 40, 40, 0.4);
+}
+.empresa-card.ativo {
+  transform: scale(1.15) rotateY(0deg);
+  z-index: 5;
+  box-shadow: 0 0 30px rgba(198, 40, 40, 0.5);
+}
+
+/* Indicador de rolagem */
+.scroll-indicator {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  color: #c62828;
+  animation: bounce 2s infinite;
+  z-index: 2;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-10px); }
+}
+
+/* ===========================
+   Responsividade
+   =========================== */
+@media (max-width: 900px) {
+  .empresa-content {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .empresa-text {
+    text-align: center;
+  }
+  .empresa-floating{
+    margin-right: 350px;
+  }
+}
+
+@media (max-width: 600px) {
+  .empresa-text h1 {
+    font-size: clamp(1.6rem, 6vw, 2rem);
+  }
+  .empresa-floating{
+    margin-right: 225px;
+  }
+  
+}
+
+/* Respeita usuários que preferem menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  .empresa-card,
+  .empresa-card:hover,
+  .empresa-card.ativo,
+  .empresa-btn,
+  .scroll-indicator {
+    transition: none !important;
+    animation: none !important;
+  }
+  
+}

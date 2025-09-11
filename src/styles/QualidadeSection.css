@@ -1,0 +1,153 @@
+/* ============================
+   Seção "Qualidade" Melhorada
+   ============================ */
+
+.qualidade-section {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 40px;
+  background: var(--bg-contraste);
+  color: var(--text-color);
+  gap: 60px;
+  position: relative;
+  z-index: 1;
+  width: 100vw;
+  min-height: 100vh; /* Centralização vertical */
+}
+
+/* Texto à esquerda */
+.qualidade-textos {
+  flex: 1 1 500px;
+  text-align: center;
+}
+
+.qualidade-textos h2 {
+  font-size: 2.5rem;
+  color: var(--text-color); /* cor base agora */
+  margin-bottom: 20px;
+  font-family: 'Orbitron', sans-serif;
+  text-shadow: none;
+}
+
+.qualidade-textos h2 span {
+  color: var(--hover-color); /* destaca apenas "Qualidade" */
+  text-shadow: none;
+}
+
+.qualidade-textos p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto 40px auto;
+  line-height: 1.6;
+}
+
+/* Cards de métricas */
+.qualidade-dados {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.dado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--card-bg);
+  
+  padding: 30px 20px;
+  border-radius: 12px;
+  width: 200px;
+  height: 200px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dado:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(198, 40, 40, 0.15);
+}
+
+.dado i {
+  font-size: 2.5rem;
+  color: var(--hover-color);
+  margin-bottom: 10px;
+}
+
+.dado h3 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: var(--text-color);
+}
+
+.dado p {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+/* Coluna da imagem à direita */
+.qualidade-imagem {
+  flex: 1 1 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Card com imagem e texto */
+.qualidade-card {
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+ 
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+}
+
+.qualidade-card:hover {
+  transform: scale(1.03);
+}
+
+.qualidade-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+/* Texto abaixo da imagem */
+.texto-card {
+  padding: 20px;
+  background-color: transparent;
+}
+
+.texto-card h3 {
+  color: var(--hover-color);
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  text-shadow: none;
+}
+
+.texto-card p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  padding: 10px 0;
+  border-radius: 6px;
+  text-shadow: none;
+}
+.dado-icon {
+  font-size: 3rem;
+  color: var(--hover-color);
+  margin-bottom: 12px;
+}
+

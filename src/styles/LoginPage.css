@@ -1,0 +1,114 @@
+/* ===========================
+   Base do documento
+   =========================== */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  color: #fff;                      /* cor de texto padrão (claro sobre fundo escuro) */
+  backdrop-filter: brightness(30%); /* escurece o “fundo” caso exista algo atrás (suporta em navegadores modernos) */
+}
+
+/* ===========================
+   Caixa do formulário de login
+   =========================== */
+.login-container {
+  max-width: 400px;                           /* largura máxima da caixa */
+  margin:  auto;                               /* centraliza horizontalmente quando possível */
+  padding: 40px 30px;
+  background: rgba(0, 0, 0, 0.7);             /* card semitransparente */
+  border-radius: 12px;                         /* cantos arredondados */
+  box-shadow: 0 0 25px rgba(255, 0, 0, 0.3);   /* brilho avermelhado */
+  text-align: center;
+  backdrop-filter: blur(10px);                 /* efeito vidro fosco */
+}
+
+/* Título do card */
+.login-container h2 {
+  font-size: 28px;
+  margin-bottom: 30px;
+  color: #fff;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.2); /* leve brilho no texto */
+}
+
+/* ===========================
+   Área que cobre a tela inteira com a imagem de fundo
+   =========================== */
+.login-wrapper {
+  height: 100vh;                                         /* ocupa a viewport */
+  background: url('../img/BackgroundLogin.png') no-repeat center center fixed;
+  background-size: cover;                                /* cobre todo o espaço */
+  display: flex;                                         /* centralização flex */
+  align-items: center;                                   /* vertical */
+  justify-content: center;                               /* horizontal */
+}
+
+/* ===========================
+   Campos do formulário
+   =========================== */
+.login-form input {
+  width: 100%;
+  padding: 14px;
+  margin: 12px 0;
+  background: #111;                  /* fundo escuro do input */
+  border: 1px solid #444;            /* borda discreta */
+  color: #fff;
+  border-radius: 6px;
+  font-size: 15px;
+  transition: border 0.3s ease;      /* anima borda no foco */
+}
+
+/* Estado de foco nos inputs */
+.login-form input:focus {
+  border-color: #c62828;                               /* destaca com a cor primária */
+  outline: none;
+  box-shadow: 0 0 5px rgba(198, 40, 40, 0.6);          /* brilho ao redor */
+}
+
+/* ===========================
+   Botão de enviar
+   =========================== */
+.login-form button {
+  width: 100%;
+  padding: 14px;
+  background-color: #c62828;     /* cor primária */
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  margin-top: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.login-form button:hover {
+  background-color: #a71d1d;     /* tom mais escuro no hover */
+  transform: scale(1.02);        /* leve crescimento no hover */
+}
+
+/* ===========================
+   Mensagem de erro
+   =========================== */
+.login-error {
+  color: #ff6b6b;                                  /* vermelho claro para erro */
+  margin-top: 10px;
+  font-size: 14px;
+  text-shadow: 0 0 3px rgba(255, 0, 0, 0.3);       /* discreto brilho */
+}
+
+/* ===========================
+   Link "Esqueceu sua senha?"
+   =========================== */
+.login-form a {
+  display: block;
+  margin-top: 10px;
+  color: #bbb;                 /* mais suave que o texto principal */
+  font-size: 13px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.login-form a:hover {
+  color: #fff;
+}

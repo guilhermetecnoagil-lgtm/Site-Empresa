@@ -1,0 +1,47 @@
+/* Container do rodapé */
+.footer {
+  background-color: var(--bg-base);   /* Fundo conforme tema (claro/escuro) */
+  color: var(--text-color);           /* Cor padrão do texto do tema */
+  text-align: center;                 /* Centraliza todo conteúdo */
+  padding: 40px 20px;                 /* Respiro interno */
+}
+
+/* Título/branding do rodapé */
+.footer h2 {
+  font-family: "Serpentine";          /* Fonte personalizada (garanta que esteja carregada) */
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Destaque em vermelho para a palavra "TECNOAGIL" */
+.footer .red {
+  color: var(--primary);              /* Vermelho principal do branding */
+}
+
+/* Linha de ícones de redes sociais */
+.footer-icons {
+  display: flex;                      /* Alinha ícones lado a lado */
+  justify-content: center;            /* Centraliza a fileira */
+  gap: 25px;                          /* Espaço entre ícones */
+  margin-bottom: 20px;
+  font-size: 1.8rem;                  /* Tamanho dos ícones (herdado pelos <svg>) */
+}
+
+/* Link de cada rede social */
+.footer-icons a {
+  color: var(--text-color);           /* Ícones seguem a cor do texto atual */
+  text-decoration: none;              /* Remove sublinhado */
+  transition: color 0.3s;             /* Anima a troca de cor no hover */
+}
+
+/* Efeito hover nos ícones */
+.footer-icons a:hover {
+  color: var(--primary);              /* Fica vermelho principal ao passar o mouse */
+}
+
+/* Texto institucional e direitos autorais */
+.footer p {
+  font-size: 0.95rem;
+  color: var(--text-primary);         /* Tom mais suave (texto secundário) */
+}
