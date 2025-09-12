@@ -1,5 +1,6 @@
 import React, { useMemo, useRef, useState } from "react";
 import "../styles/ContatoSection.css";
+import Curriculum from "./curriculum";
 
 /**
  * ContatoSection — versão final
@@ -200,6 +201,7 @@ const ContatoSection = () => {
   };
 
   return (
+          
     <section className="contato-section">
       {/* âncora oculta para disparar mailto programaticamente */}
       <a ref={hiddenMailtoRef} href="/" style={{ display: "none" }} aria-hidden />
@@ -230,7 +232,7 @@ const ContatoSection = () => {
               onChange={handleChange}
               aria-invalid={!!errors.nome}
               aria-describedby={errors.nome ? "err-nome" : undefined}
-            />
+              />
             {errors.nome && (
               <small id="err-nome" className="erro-campo">
                 {errors.nome}
@@ -267,7 +269,7 @@ const ContatoSection = () => {
               onChange={handleChange}
               inputMode="tel"
               autoComplete="tel"
-            />
+              />
           </label>
 
           <label>
@@ -282,7 +284,7 @@ const ContatoSection = () => {
               onChange={handleChange}
               aria-invalid={!!errors.mensagem}
               aria-describedby={errors.mensagem ? "err-msg" : undefined}
-            />
+              />
             <div className="contador-chars">{form.mensagem.length} / 180</div>
             {errors.mensagem && (
               <small id="err-msg" className="erro-campo">
@@ -320,6 +322,7 @@ const ContatoSection = () => {
           </div>
         </form>
       </div>
+      <Curriculum/>
     </section>
   );
 };

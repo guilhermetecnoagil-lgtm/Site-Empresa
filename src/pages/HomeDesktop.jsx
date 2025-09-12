@@ -54,6 +54,7 @@ export default function HomeDesktop() {
         }
         footer={
           <ContentBlock background="var(--bg-contraste)">
+            
             <Footer />
           </ContentBlock>
         }
