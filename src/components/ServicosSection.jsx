@@ -1,10 +1,25 @@
 // ServicosSection.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import "../styles/ServicosSection.css";
-import { servicos } from "../data/servicos"; // <— usa o mesmo array
+import { servicos } from "../data/servicos";
 
 const INTERVALO = 8000;
+
+// 🔹 LazyImage simples
+function LazyImage({ src, alt, className }) {
+  const [loaded, setLoaded] = useState(false);
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className={`${className} ${loaded ? "loaded" : "loading"}`}
+      loading="lazy"
+      onLoad={() => setLoaded(true)}
+    />
+  );
+}
 
 const ServicosSection = () => {
   const [index, setIndex] = useState(0);
@@ -12,11 +27,21 @@ const ServicosSection = () => {
   const [fade, setFade] = useState(true);
   const [startTime, setStartTime] = useState(Date.now());
 
+  // 🔹 Atualiza progresso com requestAnimationFrame
   useEffect(() => {
-    const timer = setInterval(() => {
+    let frameId;
+
+    const updateProgress = () => {
       const elapsed = Date.now() - startTime;
-      setProgress((elapsed / INTERVALO) * 100);
-    }, 100);
+      const pct = Math.min((elapsed / INTERVALO) * 100, 100);
+      setProgress(pct);
+
+      if (pct < 100) {
+        frameId = requestAnimationFrame(updateProgress);
+      }
+    };
+
+    frameId = requestAnimationFrame(updateProgress);
 
     const autoSlide = setTimeout(() => {
       setFade(false);
@@ -28,25 +53,30 @@ const ServicosSection = () => {
     }, INTERVALO);
 
     return () => {
-      clearInterval(timer);
+      cancelAnimationFrame(frameId);
       clearTimeout(autoSlide);
     };
   }, [startTime]);
 
-  const handleClick = (i) => {
-    if (i === index) return;
-    setFade(false);
-    setTimeout(() => {
-      setIndex(i);
-      setFade(true);
-      setStartTime(Date.now());
-      setProgress(0);
-    }, 300);
-  };
+  // 🔹 Handler memoizado
+  const handleClick = useCallback(
+    (i) => {
+      if (i === index) return;
+      setFade(false);
+      setTimeout(() => {
+        setIndex(i);
+        setFade(true);
+        setStartTime(Date.now());
+        setProgress(0);
+      }, 300);
+    },
+    [index]
+  );
 
   return (
     <section className="servicos-section">
       <div className="servicos-container">
+        {/* Texto e barra de serviços */}
         <div className="servicos-texto">
           <span className="servicos-indice">
             {index + 1 < 10 ? `0${index + 1}` : index + 1}
@@ -54,16 +84,20 @@ const ServicosSection = () => {
 
           <div className="barra-servicos">
             {servicos.map((servico, i) => (
-              <div
+              <button
                 key={servico.slug}
                 className={`barra-item ${i === index ? "ativo" : ""}`}
                 onClick={() => handleClick(i)}
+                aria-label={`Ver serviço: ${servico.titulo}`}
               >
                 {servico.titulo}
                 {i === index && (
-                  <div className="barra-progresso" style={{ width: `${progress}%` }} />
+                  <div
+                    className="barra-progresso"
+                    style={{ width: `${progress}%` }}
+                  />
                 )}
-              </div>
+              </button>
             ))}
           </div>
 
@@ -71,29 +105,29 @@ const ServicosSection = () => {
           <p className="servicos-descricao">{servicos[index].descricao}</p>
         </div>
 
-   <div className="servicos-imagem">
-      <img
-        src={servicos[index].imagem}
-        alt={servicos[index].titulo}
-        className={`imagem-servico ${fade ? "fade-in" : "fade-out"}`}
-      />
-      {/* botão DESKTOP dentro da coluna da imagem */}
-      <Link
-        to={`/servicos/${servicos[index].slug}`}
-        className="btn-saiba-mais btn-desktop"
-      >
-        Saiba Mais
-      </Link>
-    </div>
+        {/* Imagem e botão Desktop */}
+        <div className="servicos-imagem">
+          <LazyImage
+            src={servicos[index].imagem}
+            alt={servicos[index].titulo}
+            className={`imagem-servico ${fade ? "fade-in" : "fade-out"}`}
+          />
+          <Link
+            to={`/servicos/${servicos[index].slug}`}
+            className="btn-saiba-mais btn-desktop"
+          >
+            Saiba Mais
+          </Link>
+        </div>
 
-    {/* botão MOBILE agora dentro do container */}
-    <Link
-      to={`/servicos/${servicos[index].slug}`}
-      className="btn-saiba-mais btn-mobile"
-    >
-      Saiba Mais
-    </Link>
-     </div>
+        {/* Botão Mobile */}
+        <Link
+          to={`/servicos/${servicos[index].slug}`}
+          className="btn-saiba-mais btn-mobile"
+        >
+          Saiba Mais
+        </Link>
+      </div>
     </section>
   );
 };

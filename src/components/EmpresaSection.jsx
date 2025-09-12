@@ -3,17 +3,55 @@ import "../styles/EmpresaSection.css";
 import imagem1 from "../img/Tecnoagil1.webp";
 import imagem2 from "../img/Tecnoagil2.webp";
 import imagem3 from "../img/monitoramento.webp";
-import useFadeDirection from "../hooks/useFadeOnScroll"; // novo hook
+import useFadeDirection from "../hooks/useFadeOnScroll"; // hook de animação
+
+// 🔹 Componente de imagem com lazy loading real
+function LazyImage({ src, alt, className = "", ...props }) {
+  const [visible, setVisible] = useState(false);
+  const imgRef = useRef();
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    if (imgRef.current) {
+      observer.observe(imgRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <img
+      ref={imgRef}
+      src={visible ? src : ""}
+      alt={alt}
+      className={className}
+      loading="lazy"
+      {...props}
+    />
+  );
+}
 
 const EmpresaSection = () => {
   const [destaque, setDestaque] = useState(null);
   const cardsRef = useRef([]);
 
-  // Hooks com classe 'in' ou 'out'
+  // Hooks de fade
   const [refH1, stateH1] = useFadeDirection();
   const [refP, stateP] = useFadeDirection();
   const [refBtn, stateBtn] = useFadeDirection();
 
+  // Fecha destaque se clicar fora
   useEffect(() => {
     const handleClickFora = (event) => {
       if (
@@ -33,17 +71,12 @@ const EmpresaSection = () => {
 
       <div className="empresa-content">
         <div className="empresa-text">
-          <h1
-            ref={refH1}
-            className={`fade-text fade-${stateH1}`}
-          >
+          <h1 ref={refH1} className={`fade-text fade-${stateH1}`}>
             GRUPO TECNOAGIL
           </h1>
-          <p
-            ref={refP}
-            className={`fade-text fade-${stateP}`}
-          >
-            TRANSFORMANDO VIDAS HÁ MAIS DE 18 ANOS COM SEGURANÇA, TECNOLOGIA E AGILIDADE
+          <p ref={refP} className={`fade-text fade-${stateP}`}>
+            TRANSFORMANDO VIDAS HÁ MAIS DE 18 ANOS COM SEGURANÇA, TECNOLOGIA E
+            AGILIDADE
           </p>
           <a href="#contato">
             <button
@@ -71,7 +104,7 @@ const EmpresaSection = () => {
                 setDestaque(i);
               }}
             >
-              <img src={img} alt={`Câmera ${i + 1}`} />
+              <LazyImage src={img} alt={`Câmera ${i + 1}`} />
             </div>
           ))}
         </div>
