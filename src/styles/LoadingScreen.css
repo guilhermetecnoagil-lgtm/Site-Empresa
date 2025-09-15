@@ -24,14 +24,31 @@
   animation: pulse 1.5s infinite;
 }
 .loading-message {
-  margin-top: 20px;
-  font-size: 1rem;
-  color: #eee;
-  font-weight: 500;
+  margin-top: 24px;
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  font-family: "Orbitron", sans-serif; /* segue o estilo futurista do site */
+  color: #ccc; /* cinza claro para contraste suave */
   text-align: center;
-  animation: fadeIn 1.2s ease forwards;
+  line-height: 1.6;
+  letter-spacing: 0.5px;
+
+  /* efeito de entrada suave */
   opacity: 0;
+  animation: fadeInText 2s ease forwards 1.2s; 
 }
+
+/* destaque sutil em palavras importantes */
+.loading-message strong {
+  color: var(--hover-color); /* vermelho já usado no site */
+  text-shadow: 0 0 6px rgba(198, 40, 40, 0.6);
+  font-weight: 600;
+}
+
+@keyframes fadeInText {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 
 @keyframes fadeIn {
   to {
