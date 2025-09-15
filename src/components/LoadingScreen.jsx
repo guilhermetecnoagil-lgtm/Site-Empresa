@@ -1,17 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "../styles/LoadingScreen.css";
 import Logo from "../img/Logo.webp";
 
-export default function LoadingScreen() {
-  const [fadeOut, setFadeOut] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setFadeOut(true), 1500); // ativa saída antes de desmontar
-    return () => clearTimeout(timer);
-  }, []);
-
+export default function LoadingScreen({ isExiting }) {
   return (
-    <div className={`loading-screen ${fadeOut ? "fade-out" : ""}`}>
+    <div className={`loading-screen ${isExiting ? "fade-out" : ""}`}>
       <div className="logo-container">
         <img src={Logo} alt="Logo Tecnoagil" className="logo" />
       </div>
