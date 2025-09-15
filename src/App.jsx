@@ -12,7 +12,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [showLoading, setShowLoading] = useState(true);
 
-  const LOADING_TIME = 4000; // tempo fixo em ms (ex: 4s)
+  const LOADING_TIME = 8000; // tempo fixo em ms (ex: 4s)
   const FADE_TIME = 1000;    // tempo do fade-out (ms)
 
   // aguarda carregar tudo (simulação com timeout)
