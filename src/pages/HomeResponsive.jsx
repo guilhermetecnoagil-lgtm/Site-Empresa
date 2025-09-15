@@ -7,7 +7,7 @@ const HomeMobile  = lazy(() => import("./mobileHomeMobile"));
 export default function HomeResponsive() {
   const isMobile = useMediaQuery("(max-width: 768px)");
   return (
-    <Suspense fallback={<div style={{padding: 24}}>Carregando…</div>}>
+    <Suspense >
       {isMobile ? <HomeMobile /> : <HomeDesktop />}
     </Suspense>
   );
