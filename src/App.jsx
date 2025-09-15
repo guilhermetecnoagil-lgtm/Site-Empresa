@@ -11,19 +11,13 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [showLoading, setShowLoading] = useState(true);
 
-  const LOADING_TIME = 2000; // tempo mínimo do loading
+  const LOADING_TIME = 3000; // tempo mínimo do loader em ms
   const FADE_TIME = 1000;    // tempo da animação de saída
 
   useEffect(() => {
-    const start = Date.now();
-
-    // espera o carregamento completo da janela (imagens, fontes, css etc.)
-    window.addEventListener("load", () => {
-      const elapsed = Date.now() - start;
-      const remaining = Math.max(0, LOADING_TIME - elapsed);
-
-      setTimeout(() => setLoading(false), remaining);
-    });
+    // Garante que o loading fique no mínimo X ms
+    const timer = setTimeout(() => setLoading(false), LOADING_TIME);
+    return () => clearTimeout(timer);
   }, []);
 
   // controla a desmontagem do loader após o fade-out

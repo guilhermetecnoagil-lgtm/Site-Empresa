@@ -23,6 +23,22 @@
   width: 140px;
   animation: pulse 1.5s infinite;
 }
+.loading-message {
+  margin-top: 20px;
+  font-size: 1rem;
+  color: #eee;
+  font-weight: 500;
+  text-align: center;
+  animation: fadeIn 1.2s ease forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
 
 @keyframes pulse {
   0%, 100% { transform: scale(1); opacity: 1; }
@@ -49,3 +65,4 @@
   from { transform: translateY(0); }
   to   { transform: translateY(-8px); }
 }
+
