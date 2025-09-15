@@ -1,20 +1,19 @@
 /* ============================
-   Seção "Qualidade" Melhorada
+   Seção "Qualidade"
    ============================ */
-
 .qualidade-section {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+  gap: 60px;
   padding: 80px 40px;
+  width: 100vw;
+  min-height: 100vh;
   background: var(--bg-contraste);
   color: var(--text-color);
-  gap: 60px;
   position: relative;
   z-index: 1;
-  width: 100vw;
-  min-height: 100vh; /* Centralização vertical */
 }
 
 /* Texto à esquerda */
@@ -24,32 +23,27 @@
 }
 
 .qualidade-textos h2 {
-  font-size: 2.5rem;
-  color: var(--text-color); /* cor base agora */
+  font: 2.5rem 'Orbitron', sans-serif;
+  color: var(--text-color);
   margin-bottom: 20px;
-  font-family: 'Orbitron', sans-serif;
-  text-shadow: none;
 }
 
-.qualidade-textos h2 span {
-  color: var(--hover-color); /* destaca apenas "Qualidade" */
-  text-shadow: none;
-}
+.qualidade-textos h2 span { color: var(--hover-color); }
 
 .qualidade-textos p {
   font-size: 1.1rem;
   color: var(--text-secondary);
   max-width: 600px;
-  margin: 0 auto 40px auto;
+  margin: 0 auto 40px;
   line-height: 1.6;
 }
 
 /* Cards de métricas */
 .qualidade-dados {
   display: flex;
-  gap: 40px;
   flex-wrap: wrap;
   justify-content: center;
+  gap: 40px;
 }
 
 .dado {
@@ -58,24 +52,24 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: var(--card-bg);
-  
-  padding: 30px 20px;
-  border-radius: 12px;
+  background: var(--card-bg, var(--bg-card));
   width: 200px;
   height: 200px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 30px 20px;
+  border-radius: 12px;
+  transition: transform .3s, box-shadow .3s;
 }
 
 .dado:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(198, 40, 40, 0.15);
+  box-shadow: 0 10px 20px rgba(198,40,40,.15);
 }
 
-.dado i {
+.dado i,
+.dado-icon {
   font-size: 2.5rem;
   color: var(--hover-color);
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .dado h3 {
@@ -88,8 +82,8 @@
 .dado p {
   font-size: 1.2rem;
   font-weight: 500;
-  margin: 0;
   color: var(--text-secondary);
+  margin: 0;
 }
 
 /* Coluna da imagem à direita */
@@ -102,52 +96,38 @@
 
 /* Card com imagem e texto */
 .qualidade-card {
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
- 
   max-width: 400px;
   width: 100%;
+  border-radius: 12px;
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
+  backdrop-filter: blur(10px);
+  transition: transform .3s, box-shadow .3s;
 }
 
-.qualidade-card:hover {
-  transform: scale(1.03);
-}
+.qualidade-card:hover { transform: scale(1.03); }
 
 .qualidade-card img {
   width: 100%;
-  height: auto;
   display: block;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  border-radius: 12px 12px 0 0;
 }
 
 /* Texto abaixo da imagem */
 .texto-card {
   padding: 20px;
-  background-color: transparent;
+  background: transparent;
 }
 
 .texto-card h3 {
-  color: var(--hover-color);
   font-size: 1.5rem;
+  color: var(--hover-color);
   margin-bottom: 10px;
-  text-shadow: none;
 }
 
 .texto-card p {
   font-size: 1rem;
-  color: var(--text-secondary);
   font-weight: 500;
+  color: var(--text-secondary);
   padding: 10px 0;
   border-radius: 6px;
-  text-shadow: none;
 }
-.dado-icon {
-  font-size: 3rem;
-  color: var(--hover-color);
-  margin-bottom: 12px;
-}
-

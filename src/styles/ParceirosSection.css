@@ -1,110 +1,80 @@
-/* ===================== Parceiros (responsivo) ===================== */
-
-/* Seção geral */
+/* =====================
+   Parceiros (responsivo)
+   ===================== */
 .parceiros-section {
-  background-color: var(--bg-parceiros);
+  background: var(--bg-parceiros);
   padding: 10px;
   width: 100vw;
- 
   position: relative;
   display: flex;
-  align-items: center; /* Centraliza verticalmente o conteúdo */
+  align-items: center;
 }
 
-/* Faixa visível */
 .parceiros-carousel {
   width: 100%;
-  
+  height: clamp(100px, 14vw, 140px);
   position: relative;
-  height: clamp(100px, 14vw, 140px); /* Aumentado */
   display: flex;
   align-items: center;
 }
 
-/* Trilho com logos */
 .parceiros-track {
   display: flex;
-  gap: clamp(20px, 6vw, 60px);
-  animation: parceiros-marquee-left 40s linear infinite; /* Velocidade aumentada */
-  will-change: transform;
   align-items: center;
+  gap: clamp(20px, 6vw, 60px);
+  animation: parceiros-marquee-left 40s linear infinite;
+  will-change: transform;
 }
 
-/* Keyframes de animação contínua */
 @keyframes parceiros-marquee-left {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+  to { transform: translateX(-50%); }
 }
 
-/* Logos individuais */
 .parceiro {
   flex: 0 0 auto;
-  padding: 0 clamp(16px, 4vw, 40px);
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: clamp(140px, 20vw, 260px); /* Aumentado */
+  padding: 0 clamp(16px, 4vw, 40px);
+  min-width: clamp(140px, 20vw, 260px);
 }
 
 .parceiro img {
-  height: clamp(60px, 8vw, 90px); /* Aumentado */
+  height: clamp(60px, 8vw, 90px);
   max-width: 100%;
   object-fit: contain;
   filter: grayscale(100%);
-  transition: filter 300ms ease;
+  transition: filter .3s;
 }
 
-/* Hover remove o preto e branco */
 @media (hover: hover) and (pointer: fine) {
-  .parceiro img:hover {
-    filter: grayscale(0%);
-  }
+  .parceiro img:hover { filter: grayscale(0); }
 }
 
-/* ===================== Breakpoints ===================== */
+/* =====================
+   Breakpoints
+   ===================== */
 @media (max-width: 1024px) {
-  .parceiros-carousel {
-    height: clamp(72px, 14vw, 100px);
-  }
-  .parceiros-track {
-    gap: clamp(16px, 5vw, 40px);
-  }
-}
-@media (max-width: 900px) {
-  .parceiros-track {
-    gap: clamp(14px, 4.5vw, 32px);
-  }
-  .parceiro {
-    min-width: clamp(120px, 24vw, 200px);
-  }
-}
-@media (max-width: 600px) {
-  .parceiros-section {
-    padding: 32px 0;
-  }
-  .parceiros-carousel {
-    height: clamp(64px, 16vw, 88px);
-  }
-  .parceiros-track {
-    gap: clamp(12px, 4vw, 24px);
-    padding: 0 16px;
-  }
-  .parceiro {
-    padding: 0 16px;
-    min-width: clamp(100px, 40vw, 160px);
-  }
-  .parceiro img {
-    height: clamp(48px, 12vw, 80px); /* Aumentado também no mobile */
-  }
+  .parceiros-carousel { height: clamp(72px, 14vw, 100px); }
+  .parceiros-track { gap: clamp(16px, 5vw, 40px); }
 }
 
-/* ===================== Acessibilidade ===================== */
+@media (max-width: 900px) {
+  .parceiros-track { gap: clamp(14px, 4.5vw, 32px); }
+  .parceiro { min-width: clamp(120px, 24vw, 200px); }
+}
+
+@media (max-width: 600px) {
+  .parceiros-section { padding: 32px 0; }
+  .parceiros-carousel { height: clamp(64px, 16vw, 88px); }
+  .parceiros-track { gap: clamp(12px, 4vw, 24px); padding: 0 16px; }
+  .parceiro { padding: 0 16px; min-width: clamp(100px, 40vw, 160px); }
+  .parceiro img { height: clamp(48px, 12vw, 80px); }
+}
+
+/* =====================
+   Acessibilidade
+   ===================== */
 @media (prefers-reduced-motion: reduce) {
-  .parceiros-track {
-    animation: none;
-  }
+  .parceiros-track { animation: none; }
 }

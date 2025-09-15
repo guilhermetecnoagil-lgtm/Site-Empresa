@@ -1,35 +1,34 @@
-
-/* container principal */
+/* ============================
+   Folha - container principal
+   ============================ */
 .folha-style {
-  background: var(--bg-base);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   width: 100%;
   min-height: 100vh;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  background: var(--bg-base);
   box-sizing: border-box;
-      /* aumentei o espaço para afastar da faixa do título */
 }
 
-
-/* conteúdo */
 .folha-content {
-  max-width: 1100px;
-  width: 100%;
-  padding: clamp(16px, 3vw, 32px);
   display: grid;
   grid-template-rows: auto 1fr auto;
   row-gap: clamp(16px, 2vw, 28px);
+  width: 100%;
+  max-width: 1100px;
+  padding: clamp(16px, 3vw, 32px);
 }
 
-/* título fixo colado no topo */
+/* ============================
+   Título fixo / suspenso
+   ============================ */
 .title-hanging {
   position: fixed;
   top: -5px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
-
   background: var(--bg-base);
   border: 2px solid var(--primary);
   border-bottom: 6px solid var(--primary);
@@ -37,63 +36,57 @@
   padding: .7rem 1.6rem;
   box-shadow: 0 6px 16px rgba(0,0,0,.1);
 }
+
 .title-hanging h1 {
   margin: 0;
-  font-size: clamp(22px, 2.6vw, 34px);
-  font-weight: 800;
+  font: 800 clamp(22px, 2.6vw, 34px)/1 var(--font-primary, sans-serif);
   color: var(--text-color);
   text-align: center;
 }
 
-/* corpo em duas colunas */
+/* ============================
+   Layout principal em 2 colunas
+   ============================ */
 .folha-main {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: clamp(16px, 2.5vw, 36px);
   align-items: center;
-  margin-top: 40px; /* afastamento extra da imagem em relação ao topo */
+  margin-top: 40px;
 }
 
-/* descrição */
 .desc-block {
   font-size: 19px;
-  text-align: justify;
   line-height: 1.7;
   color: var(--text-secondary);
-  white-space: pre-line; /* 🔑 respeita quebras de linha no texto */
-
+  text-align: justify;
+  white-space: pre-line;
 }
 
-
-/* imagem */
-.folha-figure {
-  display: flex;
-  justify-content: center;
-}
+.folha-figure { display: flex; justify-content: center; }
 .folha-figure img {
   width: 100%;
   max-width: 600px;
-  border-radius: 14px;
+  margin-top: 50px;
   border: 2px solid var(--primary);
+  border-radius: 14px;
   object-fit: cover;
   box-shadow: 0 12px 28px rgba(0,0,0,.15);
-  margin-top: 50px;
 }
 
-/* botões */
-.folha-cta {
-  text-align: start;
-  margin-top: -20px;
-}
+/* ============================
+   Botões / footer
+   ============================ */
+.folha-cta { margin-top: -20px; text-align: start; }
+
 .btn-primario {
   display: inline-block;
   padding: 14px 28px;
-  border-radius: 999px;
   border: 2px solid var(--primary);
+  border-radius: 999px;
   background: var(--primary);
   color: #fff;
-  font-weight: 700;
-  font-size: 1rem;
+  font: 700 1rem/1 var(--font-primary, sans-serif);
   text-decoration: none;
   transition: all .15s ease;
 }
@@ -103,61 +96,46 @@
   transform: translateY(-2px);
 }
 
-/* voltar */
-.folha-footer {
-  text-align: start;
-  margin-top: 10px;
-}
+.folha-footer { margin-top: 10px; text-align: start; }
 .back-link {
   display: inline-flex;
   gap: 6px;
+  font-weight: 600;
   color: var(--text-secondary);
   text-decoration: none;
-  font-weight: 600;
 }
 .back-link:hover { color: var(--hover-color); }
 .arrow-left::before { content: "←"; }
 
-/* responsivo */
-@media (max-width: 768px) {
-  .folha-main {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
-  .folha-figure img { max-width: 100%; }
-}
-
-/* ============== Carrossel 3D - pilha ============== */
+/* ============================
+   Carrossel 3D - pilha
+   ============================ */
 .stack3d {
-  margin-top: 25px;
   position: relative;
+  margin: 25px auto 0;
   width: min(640px, 100%);
   height: clamp(220px, 36vw, 380px);
-  margin-inline: auto;
   user-select: none;
 }
 
 .stack3d-stage {
   position: relative;
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   transform-style: preserve-3d;
   will-change: transform;
 }
 
 .stack3d-card {
-  margin-top: 25px;
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
-  border-radius: 14px;
+  margin-top: 25px;
   border: 2px solid var(--primary);
+  border-radius: 14px;
+  background: center/cover no-repeat;
   box-shadow: 0 22px 36px rgba(0,0,0,.25);
+  backface-visibility: hidden;
   transition: transform .7s cubic-bezier(.22,.61,.36,1),
               box-shadow .3s ease, filter .3s ease, opacity .4s ease;
-  backface-visibility: hidden;
-  
 }
 
 .stack3d-card.is-front {
@@ -170,25 +148,22 @@
   opacity: .92;
 }
 
-/* botões navegação */
+/* Navegação */
 .stack3d-nav {
   position: absolute;
   top: 50%;
   translate: 0 -50%;
-  width: 42px;
-  height: 42px;
-  border-radius: 999px;
-  border: 2px solid var(--primary);
-  background: var(--bg-base);
-  color: var(--text-color);
-  font-size: 26px;
-  font-weight: 700;
-  line-height: 1;
   display: grid;
   place-items: center;
+  width: 42px; height: 42px;
+  font: 700 26px/1 var(--font-primary, sans-serif);
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  background: var(--bg-base);
+  color: var(--text-color);
   cursor: pointer;
-  transition: transform .15s ease, background .15s ease, color .15s ease;
   z-index: 120;
+  transition: transform .15s ease, background .15s ease, color .15s ease;
 }
 .stack3d-nav:hover {
   background: var(--primary);
@@ -198,128 +173,58 @@
 .stack3d-nav.prev { left: -18px; }
 .stack3d-nav.next { right: -18px; }
 
-/* indicadores */
+/* Indicadores */
 .stack3d-dots {
   position: absolute;
   left: 0; right: 0; bottom: -28px;
   display: flex;
-  gap: 8px;
   justify-content: center;
+  gap: 8px;
 }
 .stack3d-dots .dot {
   width: 8px; height: 8px;
-  border-radius: 999px;
   border: 2px solid var(--primary);
+  border-radius: 50%;
   background: transparent;
   cursor: pointer;
   transition: transform .15s ease, background .15s ease;
 }
 .stack3d-dots .dot.active,
-.stack3d-dots .dot:hover { background: var(--primary); transform: translateY(-1px); }
-
-/* responsivo: aperta botões para dentro */
-@media (max-width: 768px) {
-  .stack3d { height: clamp(200px, 52vw, 320px); }
-  .stack3d-nav.prev { left: 2px; }
-  .stack3d-nav.next { right: 2px; }
+.stack3d-dots .dot:hover {
+  background: var(--primary);
+  transform: translateY(-1px);
 }
-/* ============ fim do carrossel 3D ============ */
-/* ========= MOBILE FIRST – aprimoramentos ========= */
 
-/* ≤ 768px: empilha tudo, título colado ao topo, textos maiores e botões tocáveis */
+/* ============================
+   Responsividade
+   ============================ */
 @media (max-width: 768px) {
-  /* conteúdo com respiro nas laterais */
-  .folha-content {
-    padding: 20px 16px;
-    row-gap: 18px;
-  }
-
-  /* título deixa de ser "fixed" para não brigar com o scroll do mobile */
-  .title-hanging {
-    display: none;
-    position: sticky;   /* gruda quando chegar no topo */
-    top: 0;
-    left: unset;
-    transform: none;
-    margin: 0 -8px;     /* estica um pouco para a borda */
-    border-radius: 0 0 12px 12px;
-    padding: .6rem 1rem;
-    z-index: 20;
-  }
-  .title-hanging h1 {
-    font-size: clamp(20px, 5vw, 26px);
-  }
-
-  /* layout 1 coluna */
-  .folha-main {
-    grid-template-columns: 1fr;
-    gap: 18px;
-    margin-top: 18px;
-    text-align: left;
-  }
-
-  /* texto: confortável de ler no celular */
-  .desc-block {
-    
-    font-size: clamp(12px, 3.8vw, 18px);
-    line-height: 1.7;
-    text-align: left;     /* leitura melhor que justificado em telas estreitas */
-    hyphens: auto;        /* ajuda a quebrar palavras longas */
-    word-break: break-word;
-  }
-
-  /* carrossel mais alto e com botões para dentro */
-  .stack3d {
-    height: clamp(220px, 54vw, 340px);
-    margin-top: 12px;
-  }
+  .folha-content { padding: 20px 16px; row-gap: 18px; }
+  .title-hanging { display: none; position: sticky; top: 0; margin: 0 -8px; border-radius: 0 0 12px 12px; padding: .6rem 1rem; z-index: 20; }
+  .title-hanging h1 { font-size: clamp(20px, 5vw, 26px); }
+  .folha-main { grid-template-columns: 1fr; gap: 18px; margin-top: 18px; text-align: left; }
+  .desc-block { font-size: clamp(12px, 3.8vw, 18px); text-align: left; hyphens: auto; word-break: break-word; }
+  .stack3d { height: clamp(220px, 54vw, 340px); margin-top: 12px; }
   .stack3d-card { border-radius: 12px; }
-  .stack3d-nav {
-    width: 38px; height: 38px; font-size: 22px;
-    top: 50%;
-  }
-  .stack3d-nav.prev { left: 4px; }
-  .stack3d-nav.next { right: 4px; }
+  .stack3d-nav { width: 38px; height: 38px; font-size: 22px; }
+  .stack3d-nav.prev { left: 4px; } .stack3d-nav.next { right: 4px; }
   .stack3d-dots { bottom: -22px; }
-
-  /* CTA ocupa a largura toda e tem área de toque maior */
+  .btn-primario { width: 100%; text-align: center; padding: 16px 18px; }
   .folha-cta { margin-top: 8px; }
-  .btn-primario {
-    width: 100%;
-    text-align: center;
-    padding: 16px 18px;
-    font-size: 1rem;
-  }
-
-  /* link voltar com espaçamento */
   .folha-footer { margin-top: 12px; }
   .back-link { padding: 6px 0; }
 }
 
-/* ≤ 480px: modo super compacto (telefones pequenos) */
 @media (max-width: 480px) {
   .folha-content { padding: 16px 12px; }
-
-  .title-hanging {
-    margin: 0 -12px;
-    padding: .5rem .9rem;
-    border-width: 2px;
-    border-bottom-width: 4px;
-  }
-
+  .title-hanging { margin: 0 -12px; padding: .5rem .9rem; border-width: 2px; border-bottom-width: 4px; }
   .stack3d { height: clamp(200px, 62vw, 300px); }
   .stack3d-card { border-width: 1.5px; }
-
-  .stack3d-nav {
-    width: 34px; height: 34px; font-size: 20px;
-    border-width: 1.5px;
-  }
+  .stack3d-nav { width: 34px; height: 34px; font-size: 20px; border-width: 1.5px; }
   .stack3d-dots .dot { width: 7px; height: 7px; }
-
-  .btn-primario { padding: 14px 16px; font-size: 0.95rem; }
+  .btn-primario { padding: 14px 16px; font-size: .95rem; }
 }
 
-/* ≤ 360px: micro-ajustes para aparelhos muito estreitos */
 @media (max-width: 360px) {
   .title-hanging h1 { font-size: 18px; }
   .stack3d { height: 52vw; }

@@ -2,36 +2,32 @@
    Container geral da seção
    =========================== */
 .mostruario-section {
-  position: relative;                 /* base para pseudo-elemento e elementos absolutos */
-  padding: 80px 2vw;                  /* respiro, lateral fluida */
-  background: var(--bg-base);         /* integra com tema (claro/escuro) */
-  width: 100vw;                       /* ocupa a largura da viewport (atenção a overflow horizontal) */
-                    /* esconde eventuais transbordos visuais */
-  z-index: 0;                         /* controla empilhamento com overlay/popup */
+  position: relative;
+  padding: 80px 2vw;
+  background: var(--bg-base);
+  width: 100vw;
+  min-height: 700px;
+  z-index: 0;
   text-align: center;
   color: var(--text-color);
-  font-family: 'Orbitron', sans-serif;/* fonte estilizada para a seção */
-  --mouse-x: 50%;                     /* variáveis customizadas (atualizadas via JS) */
+  font-family: 'Orbitron', sans-serif;
+  --mouse-x: 50%;
   --mouse-y: 50%;
-  min-height: 700px;                  /* garante altura mínima do bloco */
 }
 
-/* Véu/blur sobre o fundo (efeito “vidro/foco”) */
 .mostruario-section::before {
   content: "";
   position: absolute;
-  inset: 0;                           /* cobre toda a seção */
-  backdrop-filter: blur(2px);         /* desfoca o que estiver atrás */
-  z-index: 0;                         /* fica atrás do conteúdo real */
+  inset: 0;
+  backdrop-filter: blur(2px);
+  z-index: 0;
 }
 
-/* Garante que todo conteúdo fique acima do ::before */
 .mostruario-section * {
   position: relative;
   z-index: 2;
 }
 
-/* Títulos e parágrafos da seção */
 .mostruario-section h2 {
   font-size: 2.5rem;
   color: var(--hover-color);
@@ -45,58 +41,50 @@
 }
 
 /* ===========================
-   Card principal: planta + (opcional) popup à direita
+   Card principal
    =========================== */
 .mostruario-card {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  gap: 60px;                          /* espaço entre planta e popup */
+  gap: 60px;
   position: relative;
-  transition: all 0.4s ease;          /* suaviza microtransições de layout */
+  transition: all .4s ease;
 }
 
-/* Container da planta/imagem base onde ficam os pinos */
 .planta-container {
   position: relative;
-  width: 600px;                        /* largura padrão da planta */
+  width: 600px;
   border-radius: 16px;
-  overflow: visible;                    /* pinos podem “sair” da borda */
-  transition: transform 0.4s ease;     /* para o deslocamento quando popup abre */
+  overflow: visible;
+  transition: transform .4s ease;
 }
 
-/* Desloca a planta para a esquerda quando popup está aberto */
-.shift-left {
-  transform: translateX(-100px);
-}
+.shift-left { transform: translateX(-100px); }
 
 /* ===========================
-   Pinos clicáveis (hotspots)
+   Pinos (hotspots)
    =========================== */
 .ponto-hover {
-  position: absolute;                  /* posicionados por top/left em % */
+  position: absolute;
   cursor: pointer;
-  transform: translate(-50%, -50%);    /* centraliza o ponto na coordenada */
+  transform: translate(-50%, -50%);
   z-index: 10;
 }
 
-/* Visual do pino */
 .ponto {
   width: 22px;
   height: 22px;
-  background-color: var(--hover-color);
-  border: 3px solid rgba(0, 0, 0, 0.1);
+  border: 3px solid rgba(0,0,0,.1);
   border-radius: 50%;
-  box-shadow: 0 0 12px var(--hover-color), 0 0 6px #fff inset; /* brilho */
-  transition: all 0.3s ease;
-  position: relative;
+  background: var(--hover-color);
+  box-shadow: 0 0 12px var(--hover-color), 0 0 6px #fff inset;
+  transition: transform .3s ease;
+  animation: pulsar 1.8s ease-in-out infinite;
 }
 
-.ponto:hover {
-  transform: scale(1.2);               /* feedback visual ao hover */
-}
+.ponto:hover { transform: scale(1.2); }
 
-/* Tooltip do pino (rótulo sobre o ponto) */
 .ponto-tooltip {
   position: absolute;
   top: -32px;
@@ -106,20 +94,18 @@
   color: var(--text-color);
   padding: 5px 10px;
   border-radius: 8px;
-  font-size: 0.75rem;
-  white-space: nowrap;                  /* não quebra linha */
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  opacity: 0;                           /* escondido por padrão */
-  pointer-events: none;                 /* tooltip não captura o mouse */
-  transition: opacity 0.2s ease;
+  font-size: .75rem;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
 }
 
-.ponto:hover .ponto-tooltip {
-  opacity: 1;
-}
+.ponto:hover .ponto-tooltip { opacity: 1; }
 
 /* ===========================
-   Popup fixo à direita
+   Popup lateral
    =========================== */
 .popup-fixo {
   width: 480px;
@@ -131,35 +117,28 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  z-index: 100;                        /* acima da planta/pinos */
-  box-shadow: 0 8px 30px rgba(198, 40, 40, 0.3);
-  border: 6px solid rgba(198, 40, 40, 1);
+  z-index: 100;
+  border: 6px solid rgba(198,40,40,1);
+  box-shadow: 0 8px 30px rgba(198,40,40,.3);
   backdrop-filter: blur(4px);
-  transition: all 0.3s ease;
+  transition: all .3s ease;
 }
 
-/* Botão para fechar popup */
 .fechar-popup {
   margin-top: 20px;
   padding: 8px 16px;
-  background-color: var(--hover-color);
+  background: var(--hover-color);
   border: none;
-  color: white;
+  color: #fff;
   font-weight: bold;
   border-radius: 8px;
   cursor: pointer;
   align-self: flex-end;
 }
 
-.fechar-popup:hover {
-  background-color: #a61d1d;
-}
+.fechar-popup:hover { background: #a61d1d; }
 
-/* (No layout atual, o popup é controlado por estado no React;
-   esta regra só teria efeito se o popup fosse descendente do .ponto-hover) */
-.ponto-hover:hover .popup-fixo {
-  display: flex;
-}
+/* Dica */
 .mostruario-hint {
   text-align: center;
   color: #ccc;
@@ -167,39 +146,34 @@
   margin-top: 8px;
   animation: fadeInHint 1s ease;
 }
-.more-page{
+
+.more-page {
   color: var(--text-color);
-  background-color: var(--hover-color);
+  background: var(--hover-color);
   padding: 8px;
   text-decoration: none;
   border-radius: 10px;
 }
 
-@keyframes fadeInHint {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Imagem exibida dentro do popup */
-.popup-img-grande {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  border: 2px solid var(--hover-color);
-  box-shadow: 0 0 10px var(--hover-color);
-  object-fit: cover;
-}
-
-/* Imagem da planta/base */
+/* ===========================
+   Imagens & textos
+   =========================== */
+.popup-img-grande,
 .planta-img {
   width: 100%;
   height: auto;
   display: block;
-  border-radius: 16px;
-  object-fit: contain;
+  border-radius: 12px;
+  object-fit: cover;
 }
 
-/* Texto do popup */
+.planta-img { border-radius: 16px; object-fit: contain; }
+
+.popup-img-grande {
+  border: 2px solid var(--hover-color);
+  box-shadow: 0 0 10px var(--hover-color);
+}
+
 .popup-texto-grande {
   font-size: 1.1rem;
   color: var(--text-secondary);
@@ -212,8 +186,12 @@
   display: block;
   margin-bottom: 8px;
 }
+
+/* ===========================
+   Animações
+   =========================== */
 @keyframes pulsar {
-  0% {
+  0%,100% {
     transform: scale(1);
     box-shadow: 0 0 12px var(--hover-color), 0 0 6px #790000 inset;
   }
@@ -221,44 +199,22 @@
     transform: scale(1.2);
     box-shadow: 0 0 18px var(--hover-color), 0 0 10px #790000 inset;
   }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 12px var(--hover-color), 0 0 6px #790000 inset;
-  }
 }
 
-.ponto {
-  animation: pulsar 1.8s ease-in-out infinite;
+@keyframes fadeInHint {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
+
 @keyframes fadeOutRight {
-  0% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(30px);
-  }
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(30px); }
 }
 
 @keyframes fadeInRight {
-  0% {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 
-.popup-entrando {
-  animation: fadeInRight 0.8s ease forwards;
-}
-
-.popup-saindo {
-  animation: fadeOutRight 0.3s ease forwards;
-}
-
-
-
+.popup-entrando { animation: fadeInRight .8s ease forwards; }
+.popup-saindo   { animation: fadeOutRight .3s ease forwards; }

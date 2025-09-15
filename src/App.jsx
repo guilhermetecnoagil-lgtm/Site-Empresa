@@ -1,8 +1,7 @@
 // Importa React e hooks
 import React, { useState } from "react";
 
-// Estilos globais da aplicação
-import "./styles/App.css";
+
 
 // React Router
 import { BrowserRouter as Router } from "react-router-dom";

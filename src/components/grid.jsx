@@ -1,8 +1,6 @@
 // Importa React para permitir uso de JSX em componentes funcionais
 import React from 'react';
 
-// Importa os estilos específicos do layout em grid
-import '../styles/grid.css';
 
 // Componente de layout genérico baseado em CSS Grid
 // Props:

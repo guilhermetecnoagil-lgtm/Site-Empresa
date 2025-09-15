@@ -3,9 +3,9 @@
    =========================== */
 .contato-section {
   padding: 64px 20px max(64px, 80px + env(safe-area-inset-bottom));
-  background-color: var(--bg-contraste);
+  background: var(--bg-contraste);
   text-align: center;
-  width: 100%; /* evita overflow que 100vw pode causar */
+  width: 100%;
   position: relative;
 }
 
@@ -16,6 +16,7 @@
   font-weight: 800;
   letter-spacing: .2px;
 }
+
 .contato-section h2::after {
   content: "";
   display: block;
@@ -44,6 +45,7 @@
   flex: 1 1 420px;
   min-width: 340px;
 }
+
 .contato-mapa iframe {
   width: 100%;
   height: 500px;
@@ -85,9 +87,9 @@
   border: 1px solid var(--border-color);
   border-radius: 10px;
   font-size: 1rem;
-  background-color: var(--bg-base);
+  background: var(--bg-base);
   color: var(--text-color);
-  transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
+  transition: border-color .2s, box-shadow .2s, background-color .2s;
 }
 
 .contato-form input::placeholder,
@@ -116,24 +118,25 @@
 }
 
 /* Estados de erro/sucesso */
-.erro-campo {
-  color: #ff5d5d;
-  font-size: .85rem;
-  margin-top: 6px;
-}
-.erro-global {
-  color: #fff;
-  background: #ff5d5d;
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid #e04a4a;
-}
+.erro-campo { color: #ff5d5d; font-size: .85rem; margin-top: 6px; }
+
+.erro-global,
 .ok-global {
-  color: #0f5132;
-  background: #d1e7dd;
   padding: 10px 12px;
   border-radius: 10px;
-  border: 1px solid #badbcc;
+  border: 1px solid;
+}
+
+.erro-global { 
+  color: #fff; 
+  background: #ff5d5d; 
+  border-color: #e04a4a; 
+}
+
+.ok-global { 
+  color: #0f5132; 
+  background: #d1e7dd; 
+  border-color: #badbcc; 
 }
 
 /* ===========================
@@ -142,23 +145,23 @@
 .botao-enviar,
 .contato-form button.botao-enviar {
   display: inline-block;
-  background-color: #e30613; /* vermelho Tecnoagil */
+  background: #e30613;
   color: #fff;
-  text-decoration: none;
   font-weight: 800;
   font-size: 1rem;
   padding: 12px 22px;
-  border-radius: 10px;
   border: none;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background-color .2s ease, transform .08s ease, box-shadow .2s ease;
   text-align: center;
   margin-top: 8px;
+  text-decoration: none;
+  transition: background-color .2s, transform .08s, box-shadow .2s;
   box-shadow: 0 6px 18px rgba(227, 6, 19, .28);
 }
 
-.botao-enviar:hover {
-  background-color: #c60010;
+.botao-enviar:hover:not(:disabled) {
+  background: #c60010;
   transform: translateY(-1px);
   box-shadow: 0 10px 20px rgba(227, 6, 19, .28);
 }
@@ -168,52 +171,55 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, .22);
 }
 
-.botao-enviar:disabled,
-.botao-enviar[disabled] {
+.botao-enviar:disabled {
   opacity: .65;
   cursor: not-allowed;
   box-shadow: none;
 }
 
-/* Foco visível para acessibilidade */
 .botao-enviar:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px color-mix(in oklab, #e30613 35%, transparent);
 }
 
-/* Hover genérico de buttons no form (mantém sua regra) */
+/* Hover genérico */
 .contato-form button:hover:not(:disabled) {
-  background-color: var(--assistant-bg-hover);
+  background: var(--assistant-bg-hover);
 }
 
-/* Envio alternativo (links Gmail/Outlook Web) */
+/* Envio alternativo */
 .envio-alternativo {
   margin-top: 8px;
   font-size: .92rem;
   opacity: .9;
 }
+
 .envio-alternativo a {
   color: var(--primary);
   text-decoration: none;
   border-bottom: 1px dashed color-mix(in oklab, var(--primary) 35%, transparent);
 }
+
 .envio-alternativo a:hover { text-decoration: underline; }
 
 /* ===========================
-   Scrollbar (WebKit + Firefox)
+   Scrollbar
    =========================== */
 .contato-form,
 .contato-mapa {
   scrollbar-width: thin;
   scrollbar-color: color-mix(in oklab, var(--border-color) 90%, transparent) transparent;
 }
+
 .contato-form::-webkit-scrollbar,
 .contato-mapa::-webkit-scrollbar { width: 10px; }
+
 .contato-form::-webkit-scrollbar-thumb,
 .contato-mapa::-webkit-scrollbar-thumb {
-  background-color: color-mix(in oklab, var(--border-color) 90%, transparent);
+  background: color-mix(in oklab, var(--border-color) 90%, transparent);
   border-radius: 8px;
 }
+
 .contato-form::-webkit-scrollbar-track,
 .contato-mapa::-webkit-scrollbar-track { background: transparent; }
 
@@ -223,6 +229,7 @@
 @media (max-width: 1024px) {
   .contato-mapa iframe { height: 340px; }
 }
+
 @media (max-width: 768px) {
   .contato-section { padding: 48px 14px max(56px, 72px + env(safe-area-inset-bottom)); }
   .contato-content { gap: 22px; }
