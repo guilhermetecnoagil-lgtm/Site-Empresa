@@ -7,7 +7,7 @@ import { FaFacebookF, FaInstagram, FaWhatsapp, FaLinkedinIn } from 'react-icons/
 
 // Firebase Auth
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { auth } from '../firebase/config';
+
 
 // Ícones do modo claro/escuro
 import { Sun, Moon } from "lucide-react";
@@ -21,11 +21,7 @@ const Topbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [acessosOpen, setAcessosOpen] = useState(false);
 
-  // Auth listener
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => setUser(currentUser));
-    return () => unsubscribe();
-  }, []);
+  
 
   // Tema
   useEffect(() => {

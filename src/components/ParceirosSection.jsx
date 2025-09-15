@@ -1,36 +1,57 @@
-import React, { useEffect, useRef } from "react";
+// src/components/ParceirosSection.jsx
+import React, { useRef } from "react";
 import "../styles/ParceirosSection.css";
 
-// Logos dos parceiros (todas em uma faixa só)
-import boticario from "../img/LogoBoticario.webp";
-import samur from "../img/LogoSamur.webp";
-import labo from "../img/LogoLabo.webp";
-import cincal from "../img/CincalLogo.webp";
-import jrlogo from "../img/JRLogo.webp";
-import roda from "../img/RodaleveLogo.webp";
-import sebrae from "../img/SebraeLogo.webp";
-import sonia from "../img/TiaSoniaLogo.webp";
-import sudoeste from "../img/TvSudoesteLogo.webp";
-import radio from "../img/RadioClubeLogo.webp";
-import luvep from "../img/LuvepLogo.webp";
-import band from "../img/BandFmLogo.webp";
-import bruno from "../img/JBrunoLogo.webp";
-
+// Lista com slug + import dinâmico (melhor que importar tudo de cara)
 const parceiros = [
-  { nome: "O Boticário", logo: boticario },
-  { nome: "Band FM", logo: band },
-  { nome: "J. Bruno", logo: bruno },
-  { nome: "Cincal", logo: cincal },
-  { nome: "Luvep", logo: luvep },
-  { nome: "Rádio Clube", logo: radio },
-  { nome: "TV Sudoeste", logo: sudoeste },
-  { nome: "Tia Sônia", logo: sonia },
-  { nome: "JR", logo: jrlogo },
-  { nome: "Roda Leve", logo: roda },
-  { nome: "Sebrae", logo: sebrae },
-  { nome: "Hospital Samur", logo: samur },
-  { nome: "Labo", logo: labo },
+  { nome: "O Boticário", logo: () => import("../img/LogoBoticario.webp") },
+  { nome: "Band FM", logo: () => import("../img/BandFmLogo.webp") },
+  { nome: "J. Bruno", logo: () => import("../img/JBrunoLogo.webp") },
+  { nome: "Cincal", logo: () => import("../img/CincalLogo.webp") },
+  { nome: "Luvep", logo: () => import("../img/LuvepLogo.webp") },
+  { nome: "Rádio Clube", logo: () => import("../img/RadioClubeLogo.webp") },
+  { nome: "TV Sudoeste", logo: () => import("../img/TvSudoesteLogo.webp") },
+  { nome: "Tia Sônia", logo: () => import("../img/TiaSoniaLogo.webp") },
+  { nome: "JR", logo: () => import("../img/JRLogo.webp") },
+  { nome: "Roda Leve", logo: () => import("../img/RodaleveLogo.webp") },
+  { nome: "Sebrae", logo: () => import("../img/SebraeLogo.webp") },
+  { nome: "Hospital Samur", logo: () => import("../img/LogoSamur.webp") },
+  { nome: "Labo", logo: () => import("../img/LogoLabo.webp") },
 ];
+
+// 🔹 LazyImage para não carregar tudo de uma vez
+const LazyLogo = ({ logo, alt }) => {
+  const [src, setSrc] = React.useState(null);
+  const imgRef = useRef();
+
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(async (entry) => {
+          if (entry.isIntersecting) {
+            const mod = await logo();
+            setSrc(mod.default);
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    if (imgRef.current) observer.observe(imgRef.current);
+    return () => observer.disconnect();
+  }, [logo]);
+
+  return (
+    <img
+      ref={imgRef}
+      src={src || ""}
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+    />
+  );
+};
 
 export default function ParceirosSection() {
   const sectionRef = useRef(null);
@@ -39,9 +60,9 @@ export default function ParceirosSection() {
     <section className="parceiros-section" id="parceiros" ref={sectionRef}>
       <div className="parceiros-carousel">
         <div className="parceiros-track loop loop-left">
-          {[...parceiros, ...parceiros].map((p, i) => (
+          {parceiros.map((p, i) => (
             <div className="parceiro" key={i}>
-              <img src={p.logo} alt={p.nome} />
+              <LazyLogo logo={p.logo} alt={p.nome} />
             </div>
           ))}
         </div>

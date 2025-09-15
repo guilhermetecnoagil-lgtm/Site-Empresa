@@ -1,10 +1,34 @@
-// ServicosSection.jsx
+// src/components/ServicosSection.jsx
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../styles/ServicosSection.css";
-import { servicos } from "../data/servicos"; // <— usa o mesmo array
+import { servicos } from "../data/servicos";
 
+// tempo entre slides
 const INTERVALO = 8000;
+
+// 🔹 LazyImage genérico com prioridade opcional
+function LazyImage({ src, alt, className = "", priority = false }) {
+  const [loaded, setLoaded] = useState(priority);
+
+  useEffect(() => {
+    if (!priority) {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => setLoaded(true);
+    }
+  }, [src, priority]);
+
+  return (
+    <img
+      src={loaded ? src : ""}
+      alt={alt}
+      className={className}
+      loading={priority ? "eager" : "lazy"}
+      decoding="async"
+    />
+  );
+}
 
 const ServicosSection = () => {
   const [index, setIndex] = useState(0);
@@ -12,7 +36,7 @@ const ServicosSection = () => {
   const [fade, setFade] = useState(true);
   const [startTime, setStartTime] = useState(Date.now());
 
-  // === mantém sua lógica original de animação ===
+  // progresso + auto slide
   useEffect(() => {
     const timer = setInterval(() => {
       const elapsed = Date.now() - startTime;
@@ -34,7 +58,7 @@ const ServicosSection = () => {
     };
   }, [startTime]);
 
-  // preload do próximo slide (não altera UI/estilo)
+  // 🔹 Preload do próximo slide
   useEffect(() => {
     const next = (index + 1) % servicos.length;
     const img = new Image();
@@ -55,6 +79,7 @@ const ServicosSection = () => {
   return (
     <section className="servicos-section">
       <div className="servicos-container">
+        {/* textos e abas */}
         <div className="servicos-texto">
           <span className="servicos-indice">
             {index + 1 < 10 ? `0${index + 1}` : index + 1}
@@ -82,15 +107,14 @@ const ServicosSection = () => {
           <p className="servicos-descricao">{servicos[index].descricao}</p>
         </div>
 
+        {/* imagem principal */}
         <div className="servicos-imagem">
-          <img
+          <LazyImage
             src={servicos[index].imagem}
             alt={servicos[index].titulo}
             className={`imagem-servico ${fade ? "fade-in" : "fade-out"}`}
-            loading="lazy"
-            decoding="async"
+            priority={index === 0} // 🔹 primeira carrega já no início
           />
-          {/* botão DESKTOP dentro da coluna da imagem */}
           <Link
             to={`/servicos/${servicos[index].slug}`}
             className="btn-saiba-mais btn-desktop"
@@ -99,7 +123,7 @@ const ServicosSection = () => {
           </Link>
         </div>
 
-        {/* botão MOBILE agora dentro do container */}
+        {/* botão mobile */}
         <Link
           to={`/servicos/${servicos[index].slug}`}
           className="btn-saiba-mais btn-mobile"

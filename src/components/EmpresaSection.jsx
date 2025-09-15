@@ -1,13 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../styles/EmpresaSection.css";
+
+// Imagens locais
 import imagem1 from "../img/Tecnoagil1.webp";
 import imagem2 from "../img/Tecnoagil2.webp";
-import imagem3 from "../img/monitoramento.webp";
-import useFadeDirection from "../hooks/useFadeOnScroll"; // hook de animação
+import imagem3 from "../img/monitoramento.webp"; // Hero (não lazy)
 
-// 🔹 Componente de imagem com lazy loading real
+// Hook de animação
+import useFadeDirection from "../hooks/useFadeOnScroll";
+
+// ===============================
+// 🔹 Componente LazyImage otimizado
+// ===============================
 function LazyImage({ src, alt, className = "", ...props }) {
   const [visible, setVisible] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const imgRef = useRef();
 
   useEffect(() => {
@@ -23,25 +30,36 @@ function LazyImage({ src, alt, className = "", ...props }) {
       { threshold: 0.2 }
     );
 
-    if (imgRef.current) {
-      observer.observe(imgRef.current);
-    }
-
+    if (imgRef.current) observer.observe(imgRef.current);
     return () => observer.disconnect();
   }, []);
 
   return (
-    <img
+    <div
       ref={imgRef}
-      src={visible ? src : ""}
-      alt={alt}
-      className={className}
-      loading="lazy"
-      {...props}
-    />
+      className={`lazy-wrapper ${className}`}
+      style={{
+        position: "relative",
+        overflow: "hidden",
+        background: "#111", // placeholder escuro
+      }}
+    >
+      {visible && (
+        <img
+          src={src}
+          alt={alt}
+          onLoad={() => setLoaded(true)}
+          className={`lazy-img ${loaded ? "loaded" : "loading"}`}
+          {...props}
+        />
+      )}
+    </div>
   );
 }
 
+// ===============================
+// 🔹 EmpresaSection
+// ===============================
 const EmpresaSection = () => {
   const [destaque, setDestaque] = useState(null);
   const cardsRef = useRef([]);
@@ -65,11 +83,29 @@ const EmpresaSection = () => {
     return () => document.removeEventListener("mousedown", handleClickFora);
   }, []);
 
+  // ===============================
+  // 🔹 Pré-carregamento em background
+  // ===============================
+  useEffect(() => {
+    const preload = [
+      "/img/servico1.webp",
+      "/img/servico2.webp",
+      "/img/servico3.webp",
+      "/img/mostruario1.webp",
+      "/img/mostruario2.webp",
+    ];
+    preload.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
+
   return (
     <section className="empresa-section">
       <div className="empresa-overlay"></div>
 
       <div className="empresa-content">
+        {/* Texto principal */}
         <div className="empresa-text">
           <h1 ref={refH1} className={`fade-text fade-${stateH1}`}>
             GRUPO TECNOAGIL
@@ -88,23 +124,47 @@ const EmpresaSection = () => {
           </a>
         </div>
 
+        {/* Imagens flutuantes */}
         <div className="empresa-floating">
-          {[imagem3, imagem2, imagem1].map((img, i) => (
+          {/* Hero SEM lazy (primeira imagem principal) */}
+          <div
+            ref={(el) => (cardsRef.current[0] = el)}
+            className={`empresa-card ${destaque === 0 ? "ativo" : ""}`}
+            style={{
+              top: "0%",
+              left: "20%",
+              zIndex: destaque === 0 ? 3 : 1,
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setDestaque(0);
+            }}
+          >
+            <img
+              src={imagem3}
+              alt="Monitoramento"
+              className="hero-img"
+              loading="eager"
+            />
+          </div>
+
+          {/* Outras imagens com Lazy */}
+          {[imagem2, imagem1].map((img, i) => (
             <div
-              key={i}
-              ref={(el) => (cardsRef.current[i] = el)}
-              className={`empresa-card ${destaque === i ? "ativo" : ""}`}
+              key={i + 1}
+              ref={(el) => (cardsRef.current[i + 1] = el)}
+              className={`empresa-card ${destaque === i + 1 ? "ativo" : ""}`}
               style={{
-                top: `${i * 20}%`,
-                left: `${20 + i * 15}%`,
-                zIndex: destaque === i ? 3 : 1,
+                top: `${(i + 1) * 20}%`,
+                left: `${35 + i * 15}%`,
+                zIndex: destaque === i + 1 ? 3 : 1,
               }}
               onClick={(e) => {
                 e.stopPropagation();
-                setDestaque(i);
+                setDestaque(i + 1);
               }}
             >
-              <LazyImage src={img} alt={`Câmera ${i + 1}`} />
+              <LazyImage src={img} alt={`Câmera ${i + 2}`} />
             </div>
           ))}
         </div>

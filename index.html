@@ -1,19 +1,24 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./src/img/Logo.png" />
-    <!-- Preload da fonte -->
-<link rel="preload" href="/fonts/serpentine-bold.otf" as="font" type="font/otf" crossorigin>
-<link rel="preload" href="https://fonts.gstatic.com/s/orbitron/v30/xyz.woff2" as="font" type="font/woff2" crossorigin>
-
-    
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Grupo Tecnoagil</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon.png" />
+
+    <!-- Preload fontes -->
+    <link rel="preload" href="/fonts/serpentine-bold.otf" as="font" type="font/otf" crossorigin />
+      
+    <!-- Preload imagens críticas -->
+    <link rel="preload" as="image" href="./src/img/Logo.webp" />
+    <link rel="preload" as="image" href="./src//img/Empresa.webp" />
+    <link rel="preload" as="image" href="/src/img/monitoramento.webp" />
+
   </head>
   <body>
     <div id="root"></div>
-
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
