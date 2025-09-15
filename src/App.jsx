@@ -1,4 +1,3 @@
-// App.js
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 
@@ -12,40 +11,42 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [showLoading, setShowLoading] = useState(true);
 
-  const LOADING_TIME = 8000; // tempo fixo em ms (ex: 4s)
-  const FADE_TIME = 1000;    // tempo do fade-out (ms)
+  const LOADING_TIME = 2000; // tempo mínimo
+  const FADE_TIME = 1000;    // tempo da animação
 
-  // aguarda carregar tudo (simulação com timeout)
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false); // inicia fade-out
-    }, LOADING_TIME);
+    const start = Date.now();
 
-    return () => clearTimeout(timer);
+    // espera tudo (imagens, CSS, fontes externas)
+    window.addEventListener("load", () => {
+      const elapsed = Date.now() - start;
+      const remaining = Math.max(0, LOADING_TIME - elapsed);
+
+      // espera o mínimo + o fade
+      setTimeout(() => setLoading(false), remaining);
+    });
   }, []);
 
-  // desmonta só após o fade terminar
   useEffect(() => {
     if (!loading) {
-      const fadeTimer = setTimeout(() => setShowLoading(false), FADE_TIME);
-      return () => clearTimeout(fadeTimer);
+      const timer = setTimeout(() => setShowLoading(false), FADE_TIME);
+      return () => clearTimeout(timer);
     }
   }, [loading]);
 
   return (
     <Router>
-      {/* Loading cobre tudo */}
+      {/* Loading sempre por cima */}
       {showLoading && <LoadingScreen isExiting={!loading} />}
 
-      {/* Site aparece só depois */}
-      <div className={`site-wrapper ${loading ? "hidden" : "site-enter"}`}>
+      {/* Site já monta em background */}
+      <div className="site-wrapper">
         <AppRoutes />
 
         <FloatingFabTracker
           visible={!assistenteAberto}
           onClick={() => setAssistenteAberto(true)}
         />
-
         <AssistenteModal
           isOpen={assistenteAberto}
           onClose={() => setAssistenteAberto(false)}
