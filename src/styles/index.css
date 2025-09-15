@@ -8,6 +8,13 @@
   box-sizing: border-box;
   scroll-behavior: smooth;
 }
+/* Garante que o site está por trás do loader, sem flash branco */
+.site-wrapper.hidden-under-loader {
+  visibility: hidden;
+}
+.site-wrapper {
+  visibility: visible;
+}
 
 
 html, body {

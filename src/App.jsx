@@ -16,27 +16,27 @@ function App() {
   const FADE_TIME = 1000;      // tempo da animação de saída
 
   useEffect(() => {
-    const minTimer = setTimeout(() => setLoading(false), LOADING_TIME);
-    const maxTimer = setTimeout(() => setLoading(false), MAX_WAIT_TIME);
+    const start = Date.now();
 
-    // se o site carregar antes (window.onload), libera após mínimo
-    const handleLoad = () => {
+    const handleFinish = () => {
       const elapsed = Date.now() - start;
       const remaining = Math.max(0, LOADING_TIME - elapsed);
       setTimeout(() => setLoading(false), remaining);
     };
 
-    const start = Date.now();
-    window.addEventListener("load", handleLoad);
+    // dispara quando todos os recursos carregarem
+    window.addEventListener("load", handleFinish);
+
+    // timeout de segurança (se algo travar)
+    const maxTimer = setTimeout(() => setLoading(false), MAX_WAIT_TIME);
 
     return () => {
-      clearTimeout(minTimer);
+      window.removeEventListener("load", handleFinish);
       clearTimeout(maxTimer);
-      window.removeEventListener("load", handleLoad);
     };
   }, []);
 
-  // controla a desmontagem do loader após o fade-out
+  // controla o fade do loader
   useEffect(() => {
     if (!loading) {
       const timer = setTimeout(() => setShowLoading(false), FADE_TIME);
@@ -46,14 +46,13 @@ function App() {
 
   return (
     <Router>
-      {/* Loading sempre por cima */}
+      {/* Loader em cima SEM tela branca */}
       {showLoading && <LoadingScreen isExiting={!loading} />}
 
-      {/* Site sempre carrega em background */}
-      <div className="site-wrapper">
+      {/* Site sempre renderiza no fundo, só fica coberto pelo loader */}
+      <div className={`site-wrapper ${showLoading ? "hidden-under-loader" : ""}`}>
         <AppRoutes />
 
-        {/* FAB e Modal só aparecem quando o loading terminar */}
         {!showLoading && (
           <>
             <FloatingFabTracker
