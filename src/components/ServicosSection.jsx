@@ -99,8 +99,13 @@ const ServicosSection = () => {
           </Link>
         </div>
 
-        
-          
+        {/* botão MOBILE agora dentro do container */}
+        <Link
+          to={`/servicos/${servicos[index].slug}`}
+          className="btn-saiba-mais btn-mobile"
+        >
+          Saiba Mais
+        </Link>
       </div>
     </section>
   );

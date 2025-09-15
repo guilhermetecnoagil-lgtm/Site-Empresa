@@ -41,6 +41,7 @@
 .dropdown-menu {
   position: absolute; left: 0;
   top: calc(100% + 8px); /* sem gap que faça “sumir” no hover */
+  
   background: var(--dropdown-bg);
   border: 1px solid var(--dropdown-border);
   box-shadow: 0 0 12px rgba(198, 40, 40, 0.2);
@@ -50,10 +51,11 @@
   transition: opacity .3s, transform .3s; z-index: 10;
 }
 .dropdown-menu a, .dropdown-menu button {
+  
   padding: 10px 16px; color: var(--text-color); background: transparent; border: 0;
   text-align: left; width: 100%; cursor: pointer; font-size: .95rem; white-space: nowrap;
 }
-.dropdown-menu a:hover, .dropdown-menu button:hover { background: var(--hover-bg); color: var(--hover-color); }
+.dropdown-menu a:hover, .dropdown-menu button:hover {  background: var(--hover-bg); color: var(--hover-color);  }
 
 /* Botão do dropdown (acessibilidade + mobile) */
 .dropdown-toggle{
