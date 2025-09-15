@@ -10,9 +10,20 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 5000); // simula carregamento
-    return () => clearTimeout(timer);
-  }, []);
+  const handleLoad = () => {
+    // Dá um delay suave só para a animação
+    setTimeout(() => setLoading(false), 800);
+  };
+
+  // Se o site já terminou de carregar antes do hook rodar
+  if (document.readyState === "complete") {
+    handleLoad();
+  } else {
+    window.addEventListener("load", handleLoad);
+    return () => window.removeEventListener("load", handleLoad);
+  }
+}, []);
+
 
   return (
     <Router>
