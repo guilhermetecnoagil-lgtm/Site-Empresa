@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Curriculum() {
   // Substitua pelo número real da empresa (com DDI, sem espaços ou traços)
-  const phoneNumber = "5511999999999"; // Ex: 55 = Brasil, 11 = DDD, 999999999 = número
+  const phoneNumber = "557734210975"; // Ex: 55 = Brasil, 11 = DDD, 999999999 = número
   const message = "Olá, gostaria de enviar meu currículo.";
 
   const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(

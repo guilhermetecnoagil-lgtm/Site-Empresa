@@ -11,7 +11,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [showLoading, setShowLoading] = useState(true);
 
-  const LOADING_TIME = 3000;   // tempo mínimo do loader em ms
+  const LOADING_TIME = 5000;   // tempo mínimo do loader em ms
   const MAX_WAIT_TIME = 15000; // tempo máximo de espera em ms
   const FADE_TIME = 1000;      // tempo da animação de saída
 
