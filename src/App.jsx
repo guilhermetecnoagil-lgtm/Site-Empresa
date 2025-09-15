@@ -12,7 +12,7 @@ function App() {
   useEffect(() => {
   const handleLoad = () => {
     // Dá um delay suave só para a animação
-    setTimeout(() => setLoading(false), 800);
+    setTimeout(() => setLoading(false), 5000);
   };
 
   // Se o site já terminou de carregar antes do hook rodar
