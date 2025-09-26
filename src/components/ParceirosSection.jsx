@@ -1,8 +1,8 @@
 // src/components/ParceirosSection.jsx
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect, memo, useCallback } from "react";
 import "../styles/ParceirosSection.css";
 
-// Lista com slug + import dinâmico (melhor que importar tudo de cara)
+// Lista com slug + import dinâmico
 const parceiros = [
   { nome: "O Boticário", logo: () => import("../img/LogoBoticario.webp") },
   { nome: "Band FM", logo: () => import("../img/BandFmLogo.webp") },
@@ -19,24 +19,21 @@ const parceiros = [
   { nome: "Labo", logo: () => import("../img/LogoLabo.webp") },
 ];
 
-// 🔹 LazyImage para não carregar tudo de uma vez
-const LazyLogo = ({ logo, alt }) => {
-  const [src, setSrc] = React.useState(null);
-  const imgRef = useRef();
+// 🔹 Componente otimizado para imagens
+const LazyLogo = memo(function LazyLogo({ logo, alt }) {
+  const [src, setSrc] = useState(null);
+  const imgRef = useRef(null);
 
-  React.useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(async (entry) => {
-          if (entry.isIntersecting) {
-            const mod = await logo();
-            setSrc(mod.default);
-            observer.disconnect();
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(async (entry) => {
+        if (entry.isIntersecting) {
+          const mod = await logo();
+          setSrc(mod.default);
+          obs.disconnect();
+        }
+      });
+    }, { threshold: 0.2 });
 
     if (imgRef.current) observer.observe(imgRef.current);
     return () => observer.disconnect();
@@ -45,28 +42,40 @@ const LazyLogo = ({ logo, alt }) => {
   return (
     <img
       ref={imgRef}
-      src={src || ""}
+      src={src ?? undefined}
       alt={alt}
       loading="lazy"
       decoding="async"
+      className="parceiro-logo"
     />
   );
-};
+});
 
-export default function ParceirosSection() {
+// 🔹 Seção de Parceiros
+function ParceirosSection() {
   const sectionRef = useRef(null);
+
+  // callback memoizado para passar ao map
+  const renderParceiro = useCallback(
+    (p, i) => (
+      <div className="parceiro" key={i}>
+        <LazyLogo logo={p.logo} alt={p.nome} />
+      </div>
+    ),
+    []
+  );
 
   return (
     <section className="parceiros-section" id="parceiros" ref={sectionRef}>
-      <div className="parceiros-carousel">
-        <div className="parceiros-track loop loop-left">
-          {parceiros.map((p, i) => (
-            <div className="parceiro" key={i}>
-              <LazyLogo logo={p.logo} alt={p.nome} />
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
+  <h2 className="parceiros-titulo">Parceiros</h2>
+  <div className="parceiros-carousel">
+    <div className="parceiros-track loop loop-left">
+      {parceiros.map(renderParceiro)}
+    </div>
+  </div>
+</section>
+
   );
 }
+
+export default memo(ParceirosSection);

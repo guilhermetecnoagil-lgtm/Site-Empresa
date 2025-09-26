@@ -1,56 +1,31 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState, useCallback } from "react";
 import "../styles/ContatoSection.css";
 import Curriculum from "./curriculum";
-
-/**
- * ContatoSection — versão final
- * - Tenta enviar via API (window._env_.CONTACT_ENDPOINT). Se não existir ou falhar,
- *   faz fallback para mailto.
- * - Mostra mensagens de sucesso/erro e evita envio duplo (loading).
- * - Máscara de telefone BR e validações simples.
- * - Atalhos para Gmail/Outlook Web (opcional).
- *
- * Para habilitar a API:
- * <script>
- *   window._env_ = {
- *     CONTACT_ENDPOINT: "https://seu-dominio.com/api/contact",
- *     CONTACT_EMAIL: "ti@tecnoagil.com"
- *   }
- * </script>
- */
 
 const DEFAULT_EMAIL = "ti@tecnoagil.com";
 const DEFAULT_SUBJECT = "Contato pelo site";
 
-// Validação simples de email
+// 🔹 Utilidades (fora do componente para não recriar a cada render)
 const isValidEmail = (v) =>
   /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(String(v || "").trim());
 
-// Normaliza CRLF para mailto
 const crlf = (s) => String(s || "").replace(/\r?\n/g, "%0D%0A");
 
-// Máscara telefone BR (até 11 dígitos)
 const formatarTelefone = (valor) => {
-  const somenteNumeros = (valor || "").replace(/\D/g, "").slice(0, 11);
-  if (somenteNumeros.length <= 10) {
-    return somenteNumeros.replace(/^(\d{2})(\d{4})(\d{0,4})$/, "($1) $2-$3");
-  }
-  return somenteNumeros.replace(/^(\d{2})(\d{5})(\d{0,4})$/, "($1) $2-$3");
+  const numeros = (valor || "").replace(/\D/g, "").slice(0, 11);
+  return numeros.length <= 10
+    ? numeros.replace(/^(\d{2})(\d{4})(\d{0,4})$/, "($1) $2-$3")
+    : numeros.replace(/^(\d{2})(\d{5})(\d{0,4})$/, "($1) $2-$3");
 };
 
 const ContatoSection = () => {
-  const [form, setForm] = useState({
-    nome: "",
-    email: "",
-    telefone: "",
-    mensagem: "",
-  });
+  const [form, setForm] = useState({ nome: "", email: "", telefone: "", mensagem: "" });
   const [errors, setErrors] = useState({});
   const [enviando, setEnviando] = useState(false);
   const [okMsg, setOkMsg] = useState("");
   const hiddenMailtoRef = useRef(null);
 
-  // Configs opcionais injetadas no index.html
+  // 🔹 useMemo para configs injetadas
   const CONTACT_ENDPOINT = useMemo(
     () => (typeof window !== "undefined" ? window._env_?.CONTACT_ENDPOINT || null : null),
     []
@@ -60,19 +35,19 @@ const ContatoSection = () => {
     []
   );
 
-  const handleChange = (e) => {
+  // 🔹 Handlers memoizados
+  const handleChange = useCallback((e) => {
     const { name, value } = e.target;
     setOkMsg("");
     setErrors((prev) => ({ ...prev, [name]: "", submit: "" }));
 
-    if (name === "telefone") {
-      setForm((prev) => ({ ...prev, [name]: formatarTelefone(value) }));
-    } else {
-      setForm((prev) => ({ ...prev, [name]: value }));
-    }
-  };
+    setForm((prev) => ({
+      ...prev,
+      [name]: name === "telefone" ? formatarTelefone(value) : value,
+    }));
+  }, []);
 
-  const validar = () => {
+  const validar = useCallback(() => {
     const e = {};
     if (!form.nome.trim()) e.nome = "Informe seu primeiro nome.";
     if (!isValidEmail(form.email)) e.email = "Informe um e-mail válido.";
@@ -80,11 +55,10 @@ const ContatoSection = () => {
     if (form.mensagem.length > 180) e.mensagem = "Máximo de 180 caracteres.";
     setErrors(e);
     return Object.keys(e).length === 0;
-  };
+  }, [form]);
 
-  // Gera mailto com form + CRLF
-  const buildMailto = () => {
-    const assunto = `${DEFAULT_SUBJECT}`;
+  // 🔹 Helpers de links
+  const buildMailto = useCallback(() => {
     const corpo = [
       `Nome: ${form.nome}`,
       `Email: ${form.email}`,
@@ -94,92 +68,66 @@ const ContatoSection = () => {
       `${form.mensagem}`,
     ].join("\r\n");
 
-    return `mailto:${encodeURIComponent(
-      CONTACT_EMAIL
-    )}?subject=${encodeURIComponent(assunto)}&body=${crlf(corpo)}`;
-  };
+    return `mailto:${encodeURIComponent(CONTACT_EMAIL)}?subject=${encodeURIComponent(
+      DEFAULT_SUBJECT
+    )}&body=${crlf(corpo)}`;
+  }, [form, CONTACT_EMAIL]);
 
-  // Links para compor via webmail (caso usuário prefira web)
-  const buildGmailLink = () => {
-    const body = [
-      `Nome: ${form.nome}`,
-      `Email: ${form.email}`,
-      `Telefone: ${form.telefone || "Não informado"}`,
-      "",
-      `Mensagem:`,
-      `${form.mensagem}`,
-    ].join("\n");
-    return `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
-      CONTACT_EMAIL
-    )}&su=${encodeURIComponent(DEFAULT_SUBJECT)}&body=${encodeURIComponent(body)}`;
-  };
+  const buildWebmailLink = useCallback(
+    (provider) => {
+      const body = [
+        `Nome: ${form.nome}`,
+        `Email: ${form.email}`,
+        `Telefone: ${form.telefone || "Não informado"}`,
+        "",
+        `Mensagem:`,
+        `${form.mensagem}`,
+      ].join("\n");
 
-  const buildOutlookWebLink = () => {
-    const body = [
-      `Nome: ${form.nome}`,
-      `Email: ${form.email}`,
-      `Telefone: ${form.telefone || "Não informado"}`,
-      "",
-      `Mensagem:`,
-      `${form.mensagem}`,
-    ].join("\n");
-    return `https://outlook.office.com/mail/deeplink/compose?to=${encodeURIComponent(
-      CONTACT_EMAIL
-    )}&subject=${encodeURIComponent(DEFAULT_SUBJECT)}&body=${encodeURIComponent(body)}`;
-  };
+      if (provider === "gmail") {
+        return `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
+          CONTACT_EMAIL
+        )}&su=${encodeURIComponent(DEFAULT_SUBJECT)}&body=${encodeURIComponent(body)}`;
+      }
+      return `https://outlook.office.com/mail/deeplink/compose?to=${encodeURIComponent(
+        CONTACT_EMAIL
+      )}&subject=${encodeURIComponent(DEFAULT_SUBJECT)}&body=${encodeURIComponent(body)}`;
+    },
+    [form, CONTACT_EMAIL]
+  );
 
-  // Envio pela API (se houver)
-  const enviarAPI = async () => {
+  // 🔹 API request isolada
+  const enviarAPI = useCallback(async () => {
     const payload = {
-      nome: form.nome.trim(),
-      email: form.email.trim(),
-      telefone: form.telefone.trim(),
-      mensagem: form.mensagem.trim(),
+      ...form,
       origem: "site/contato",
       timestamp: Date.now(),
     };
-
     const res = await fetch(CONTACT_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify(payload),
     });
+    if (!res.ok) throw new Error(`Falha API (${res.status})`);
+  }, [form, CONTACT_ENDPOINT]);
 
-    if (!res.ok) {
-      const txt = await res.text().catch(() => "");
-      throw new Error(`Falha API (${res.status}) ${txt}`);
-    }
-  };
+  const onSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      setOkMsg("");
+      setErrors((prev) => ({ ...prev, submit: "" }));
+      if (!validar()) return;
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    setOkMsg("");
-    setErrors((prev) => ({ ...prev, submit: "" }));
-    if (!validar()) return;
-
-    setEnviando(true);
-    try {
-      // 1) tenta API se existir
-      if (CONTACT_ENDPOINT) {
-        await enviarAPI();
-        setOkMsg("Mensagem enviada com sucesso! Nossa equipe entrará em contato em breve.");
-        setForm({ nome: "", email: "", telefone: "", mensagem: "" });
-        return;
-      }
-
-      // 2) fallback: mailto
-      const href = buildMailto();
-      if (hiddenMailtoRef.current) {
-        hiddenMailtoRef.current.href = href;
-        hiddenMailtoRef.current.click();
-      } else {
-        window.location.href = href;
-      }
-      setOkMsg("Abrimos seu cliente de e-mail com a mensagem preenchida. É só revisar e enviar.");
-    } catch (err) {
-      console.error(err);
-      // Se a API falhar, tentar mailto
+      setEnviando(true);
       try {
+        if (CONTACT_ENDPOINT) {
+          await enviarAPI();
+          setOkMsg("Mensagem enviada com sucesso! Nossa equipe entrará em contato em breve.");
+          setForm({ nome: "", email: "", telefone: "", mensagem: "" });
+          return;
+        }
+
+        // fallback mailto
         const href = buildMailto();
         if (hiddenMailtoRef.current) {
           hiddenMailtoRef.current.href = href;
@@ -187,23 +135,34 @@ const ContatoSection = () => {
         } else {
           window.location.href = href;
         }
-        setOkMsg("Não foi possível enviar pela API. Abrimos seu e-mail para você concluir o envio.");
-      } catch (err2) {
-        console.error(err2);
-        setErrors((prev) => ({
-          ...prev,
-          submit: "Não foi possível enviar a mensagem agora. Tente novamente mais tarde.",
-        }));
+        setOkMsg("Abrimos seu cliente de e-mail com a mensagem preenchida.");
+      } catch (err) {
+        console.error(err);
+        // fallback mailto se API falhar
+        try {
+          const href = buildMailto();
+          if (hiddenMailtoRef.current) {
+            hiddenMailtoRef.current.href = href;
+            hiddenMailtoRef.current.click();
+          } else {
+            window.location.href = href;
+          }
+          setOkMsg("Não foi possível enviar pela API. Abrimos seu e-mail para você concluir o envio.");
+        } catch {
+          setErrors((prev) => ({
+            ...prev,
+            submit: "Não foi possível enviar a mensagem agora. Tente novamente mais tarde.",
+          }));
+        }
+      } finally {
+        setEnviando(false);
       }
-    } finally {
-      setEnviando(false);
-    }
-  };
+    },
+    [validar, CONTACT_ENDPOINT, enviarAPI, buildMailto]
+  );
 
   return (
-          
     <section className="contato-section">
-      {/* âncora oculta para disparar mailto programaticamente */}
       <a ref={hiddenMailtoRef} href="/" style={{ display: "none" }} aria-hidden />
 
       <div className="contato-content">
@@ -214,13 +173,14 @@ const ContatoSection = () => {
             width="100%"
             height="350"
             style={{ border: 0 }}
-            allowFullScreen=""
+            allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-          ></iframe>
+          />
         </div>
 
         <form className="contato-form" onSubmit={onSubmit} noValidate>
+          {/* Nome */}
           <label>
             Primeiro Nome *
             <input
@@ -232,14 +192,11 @@ const ContatoSection = () => {
               onChange={handleChange}
               aria-invalid={!!errors.nome}
               aria-describedby={errors.nome ? "err-nome" : undefined}
-              />
-            {errors.nome && (
-              <small id="err-nome" className="erro-campo">
-                {errors.nome}
-              </small>
-            )}
+            />
+            {errors.nome && <small id="err-nome" className="erro-campo">{errors.nome}</small>}
           </label>
 
+          {/* Email */}
           <label>
             Endereço de E-mail *
             <input
@@ -252,13 +209,10 @@ const ContatoSection = () => {
               aria-invalid={!!errors.email}
               aria-describedby={errors.email ? "err-email" : undefined}
             />
-            {errors.email && (
-              <small id="err-email" className="erro-campo">
-                {errors.email}
-              </small>
-            )}
+            {errors.email && <small id="err-email" className="erro-campo">{errors.email}</small>}
           </label>
 
+          {/* Telefone */}
           <label>
             Telefone
             <input
@@ -269,9 +223,10 @@ const ContatoSection = () => {
               onChange={handleChange}
               inputMode="tel"
               autoComplete="tel"
-              />
+            />
           </label>
 
+          {/* Mensagem */}
           <label>
             Mensagem *
             <textarea
@@ -284,45 +239,30 @@ const ContatoSection = () => {
               onChange={handleChange}
               aria-invalid={!!errors.mensagem}
               aria-describedby={errors.mensagem ? "err-msg" : undefined}
-              />
+            />
             <div className="contador-chars">{form.mensagem.length} / 180</div>
-            {errors.mensagem && (
-              <small id="err-msg" className="erro-campo">
-                {errors.mensagem}
-              </small>
-            )}
+            {errors.mensagem && <small id="err-msg" className="erro-campo">{errors.mensagem}</small>}
           </label>
 
-          {errors.submit && (
-            <div className="erro-global" role="alert">
-              {errors.submit}
-            </div>
-          )}
-          {okMsg && (
-            <div className="ok-global" role="status" aria-live="polite">
-              {okMsg}
-            </div>
-          )}
+          {/* Feedbacks */}
+          {errors.submit && <div className="erro-global" role="alert">{errors.submit}</div>}
+          {okMsg && <div className="ok-global" role="status" aria-live="polite">{okMsg}</div>}
 
-          <button
-            type="submit"
-            className="botao-enviar"
-            disabled={enviando}
-            style={{ marginTop: 20 }}
-          >
+          {/* Botão */}
+          <button type="submit" className="botao-enviar" disabled={enviando}>
             {enviando ? "Enviando..." : "Enviar"}
           </button>
 
-          {/* Opções alternativas de envio via webmail (não substituem o botão principal) */}
-          <div className="envio-alternativo" style={{ marginTop: 12, fontSize: ".92rem", opacity: 0.85 }}>
+          {/* Webmail */}
+          <div className="envio-alternativo">
             Prefere webmail? &nbsp;
-            <a href={buildGmailLink()} target="_blank" rel="noreferrer">Abrir no Gmail</a>
+            <a href={buildWebmailLink("gmail")} target="_blank" rel="noreferrer">Abrir no Gmail</a>
             &nbsp;|&nbsp;
-            <a href={buildOutlookWebLink()} target="_blank" rel="noreferrer">Abrir no Outlook Web</a>
+            <a href={buildWebmailLink("outlook")} target="_blank" rel="noreferrer">Abrir no Outlook Web</a>
           </div>
         </form>
       </div>
-      <Curriculum/>
+      <Curriculum />
     </section>
   );
 };

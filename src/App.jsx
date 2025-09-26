@@ -1,68 +1,89 @@
-import React, { useState, useEffect } from "react";
+// src/App.jsx
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
-
 import AppRoutes from "./routes/AppRoutes";
-import FloatingFabTracker from "./components/FloatingFab";
-import AssistenteModal from "./components/assistenteModal";
 import LoadingScreen from "./components/LoadingScreen";
+
+// Lazy imports
+const FloatingFabTracker = lazy(() => import("./components/FloatingFab"));
+const AssistenteModal = lazy(() => import("./components/AssistenteModal"));
 
 function App() {
   const [assistenteAberto, setAssistenteAberto] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [showLoading, setShowLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
 
-  const LOADING_TIME = 5000;   // tempo mínimo do loader em ms
-  const MAX_WAIT_TIME = 15000; // tempo máximo de espera em ms
-  const FADE_TIME = 1000;      // tempo da animação de saída
+  const LOADING_TIME = 3000;
+  const MAX_WAIT_TIME = 15000;
+  const FADE_TIME = 1000;
 
   useEffect(() => {
-    const start = Date.now();
+    const alreadyLoaded = sessionStorage.getItem("loaderShown");
 
-    const handleFinish = () => {
-      const elapsed = Date.now() - start;
-      const remaining = Math.max(0, LOADING_TIME - elapsed);
-      setTimeout(() => setLoading(false), remaining);
-    };
+    if (!alreadyLoaded) {
+      setLoading(true);
+      setShowLoading(true);
 
-    // dispara quando todos os recursos carregarem
-    window.addEventListener("load", handleFinish);
+      const start = Date.now();
+      const handleFinish = () => {
+        const elapsed = Date.now() - start;
+        const remaining = Math.max(0, LOADING_TIME - elapsed);
+        setTimeout(() => setLoading(false), remaining);
+      };
 
-    // timeout de segurança (se algo travar)
-    const maxTimer = setTimeout(() => setLoading(false), MAX_WAIT_TIME);
+      window.addEventListener("load", handleFinish);
+      const maxTimer = setTimeout(() => setLoading(false), MAX_WAIT_TIME);
 
-    return () => {
-      window.removeEventListener("load", handleFinish);
-      clearTimeout(maxTimer);
-    };
+      return () => {
+        window.removeEventListener("load", handleFinish);
+        clearTimeout(maxTimer);
+      };
+    }
   }, []);
 
-  // controla o fade do loader
+  // controla o fade
   useEffect(() => {
-    if (!loading) {
-      const timer = setTimeout(() => setShowLoading(false), FADE_TIME);
+    if (!loading && showLoading) {
+      const timer = setTimeout(() => {
+        setShowLoading(false);
+        sessionStorage.setItem("loaderShown", "true");
+      }, FADE_TIME);
+
       return () => clearTimeout(timer);
     }
-  }, [loading]);
+  }, [loading, showLoading]);
+
+  // 🔹 pré-carregar o modal em background
+  useEffect(() => {
+    import("./components/AssistenteModal");
+  }, []);
 
   return (
     <Router>
-      {/* Loader em cima SEM tela branca */}
       {showLoading && <LoadingScreen isExiting={!loading} />}
 
-      {/* Site sempre renderiza no fundo, só fica coberto pelo loader */}
       <div className={`site-wrapper ${showLoading ? "hidden-under-loader" : ""}`}>
         <AppRoutes />
 
         {!showLoading && (
           <>
-            <FloatingFabTracker
-              visible={!assistenteAberto}
-              onClick={() => setAssistenteAberto(true)}
-            />
-            <AssistenteModal
-              isOpen={assistenteAberto}
-              onClose={() => setAssistenteAberto(false)}
-            />
+            {/* FAB leve → não precisa suspense */}
+            <Suspense fallback={null}>
+              <FloatingFabTracker
+                visible={!assistenteAberto}
+                onClick={() => setAssistenteAberto(true)}
+              />
+            </Suspense>
+
+            {/* Modal pesado → suspense com loader */}
+            {assistenteAberto && (
+              <Suspense fallback={<div className="modal-loader">Carregando assistente...</div>}>
+                <AssistenteModal
+                  isOpen={assistenteAberto}
+                  onClose={() => setAssistenteAberto(false)}
+                />
+              </Suspense>
+            )}
           </>
         )}
       </div>

@@ -1,0 +1,70 @@
+.brx-section{
+  background: var(--bg-base);
+  padding: clamp(32px, 6vw, 64px) 1rem;
+  text-align:center;
+}
+.brx-title{
+  font: 700 clamp(20px,4vw,34px)/1.1 var(--font-heading, system-ui, sans-serif);
+  color:#ff2a2a;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  margin:0 0 .5rem;
+  text-shadow:0 2px 6px rgba(0,0,0,.6);
+}
+.brx-subtitle{ margin:0 0 2rem; opacity:.8; }
+
+.brx-grid{
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap:clamp(16px,3vw,28px);
+}
+@media (max-width:1100px){ .brx-grid{ grid-template-columns:repeat(3,1fr);} }
+@media (max-width:800px){  .brx-grid{ grid-template-columns:repeat(2,1fr);} }
+@media (max-width:520px){  .brx-grid{ grid-template-columns:1fr; }}
+
+/* card vitrine (glass) */
+.brx-card{
+  position:relative;
+  border-radius:20px;
+  padding:clamp(16px,2.5vw,22px);
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  border:1px solid rgba(255,255,255,.15);
+  box-shadow:0 12px 30px rgba(0,0,0,.35);
+  backdrop-filter: blur(8px);
+  color: var(--text-secondary);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.brx-card:hover{
+  transform: translateY(-4px);
+  box-shadow:0 18px 40px rgba(0,0,0,.45);
+  border-color: rgba(255,42,42,.35);
+}
+
+.brx-media{
+   display: flex;
+  align-items: flex-start; /* joga para cima */
+  justify-content: center; /* continua centralizado na horizontal */
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  margin-bottom: 12px; display:grid; place-items:center;
+  aspect-ratio:16/9;
+ 
+}
+.brx-logo{
+  max-width:80%; max-height:80%; object-fit:contain;
+  
+  filter: grayscale(100%) blur(3px);
+  opacity:.35;
+  transition: filter .4s ease, opacity .4s ease, transform .3s ease;
+}
+.brx-logo.is-loaded{ filter: grayscale(0%) blur(0); opacity:1; }
+.brx-card:hover .brx-logo{ transform: scale(1.02); }
+
+.brx-info{ padding:2px 4px 0; }
+.brx-name{
+  margin:.25rem 0 0;
+  font:700 clamp(16px,2.4vw,20px)/1.2 var(--font-heading, system-ui, sans-serif);
+}
+.brx-slogan{ margin:.25rem 0 0; opacity:.85; font-size:clamp(12px,2vw,14px); }

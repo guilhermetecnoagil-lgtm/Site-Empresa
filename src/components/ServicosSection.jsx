@@ -1,35 +1,49 @@
 // src/components/ServicosSection.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback, memo } from "react";
 import { Link } from "react-router-dom";
 import "../styles/ServicosSection.css";
 import { servicos } from "../data/servicos";
 
-// tempo entre slides
 const INTERVALO = 8000;
 
-// 🔹 LazyImage genérico com prioridade opcional
-function LazyImage({ src, alt, className = "", priority = false }) {
-  const [loaded, setLoaded] = useState(priority);
+// 🔹 LazyImage otimizado com IntersectionObserver
+const LazyImage = memo(function LazyImage({ src, alt, className = "", priority = false }) {
+  const [visible, setVisible] = useState(priority);
+  const imgRef = useRef(null);
 
   useEffect(() => {
-    if (!priority) {
-      const img = new Image();
-      img.src = src;
-      img.onload = () => setLoaded(true);
-    }
-  }, [src, priority]);
+    if (priority) return; // já carrega se for prioritária
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    if (imgRef.current) observer.observe(imgRef.current);
+
+    return () => observer.disconnect();
+  }, [priority]);
 
   return (
     <img
-      src={loaded ? src : ""}
+      ref={imgRef}
+      src={visible ? src : undefined}
       alt={alt}
       className={className}
       loading={priority ? "eager" : "lazy"}
       decoding="async"
     />
   );
-}
+});
 
+// 🔹 Componente principal
 const ServicosSection = () => {
   const [index, setIndex] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -65,16 +79,20 @@ const ServicosSection = () => {
     img.src = servicos[next].imagem;
   }, [index]);
 
-  const handleClick = (i) => {
-    if (i === index) return;
-    setFade(false);
-    setTimeout(() => {
-      setIndex(i);
-      setFade(true);
-      setStartTime(Date.now());
-      setProgress(0);
-    }, 300);
-  };
+  // 🔹 Handler estável
+  const handleClick = useCallback(
+    (i) => {
+      if (i === index) return;
+      setFade(false);
+      setTimeout(() => {
+        setIndex(i);
+        setFade(true);
+        setStartTime(Date.now());
+        setProgress(0);
+      }, 300);
+    },
+    [index]
+  );
 
   return (
     <section className="servicos-section">
@@ -135,4 +153,4 @@ const ServicosSection = () => {
   );
 };
 
-export default ServicosSection;
+export default memo(ServicosSection);

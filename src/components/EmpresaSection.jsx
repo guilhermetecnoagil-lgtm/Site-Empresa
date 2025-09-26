@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import "../styles/EmpresaSection.css";
 
 // Imagens locais
@@ -12,42 +12,42 @@ import useFadeDirection from "../hooks/useFadeOnScroll";
 // ===============================
 // 🔹 Componente LazyImage otimizado
 // ===============================
-function LazyImage({ src, alt, className = "", ...props }) {
-  const [visible, setVisible] = useState(false);
+// 🔹 LazyImage atualizado
+const LazyImage = React.memo(function LazyImage({ src, alt, className = "", priority = false, ...props }) {
+  const [visible, setVisible] = useState(priority);
   const [loaded, setLoaded] = useState(false);
   const imgRef = useRef();
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setVisible(true);
-            observer.disconnect();
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
+    if (!priority) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setVisible(true);
+              observer.disconnect();
+            }
+          });
+        },
+        { threshold: 0.2 }
+      );
 
-    if (imgRef.current) observer.observe(imgRef.current);
-    return () => observer.disconnect();
-  }, []);
+      if (imgRef.current) observer.observe(imgRef.current);
+      return () => observer.disconnect();
+    }
+  }, [priority]);
 
   return (
     <div
       ref={imgRef}
       className={`lazy-wrapper ${className}`}
-      style={{
-        position: "relative",
-        overflow: "hidden",
-        background: "#111", // placeholder escuro
-      }}
+      style={{ position: "relative", overflow: "hidden", background: "#111" }}
     >
       {visible && (
         <img
           src={src}
           alt={alt}
+          loading={priority ? "eager" : "lazy"}
           onLoad={() => setLoaded(true)}
           className={`lazy-img ${loaded ? "loaded" : "loading"}`}
           {...props}
@@ -55,7 +55,8 @@ function LazyImage({ src, alt, className = "", ...props }) {
       )}
     </div>
   );
-}
+});
+
 
 // ===============================
 // 🔹 EmpresaSection
@@ -70,35 +71,35 @@ const EmpresaSection = () => {
   const [refBtn, stateBtn] = useFadeDirection();
 
   // Fecha destaque se clicar fora
-  useEffect(() => {
-    const handleClickFora = (event) => {
-      if (
-        cardsRef.current.every((card) => card && !card.contains(event.target))
-      ) {
-        setDestaque(null);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickFora);
-    return () => document.removeEventListener("mousedown", handleClickFora);
+  const handleClickFora = useCallback((event) => {
+    if (cardsRef.current.every((card) => card && !card.contains(event.target))) {
+      setDestaque(null);
+    }
   }, []);
 
-  // ===============================
-  // 🔹 Pré-carregamento em background
-  // ===============================
   useEffect(() => {
-    const preload = [
+    document.addEventListener("mousedown", handleClickFora);
+    return () => document.removeEventListener("mousedown", handleClickFora);
+  }, [handleClickFora]);
+
+  // 🔹 Pré-carregamento em background (memoizado)
+  const preloadImages = useMemo(
+    () => [
       "/img/servico1.webp",
       "/img/servico2.webp",
       "/img/servico3.webp",
       "/img/mostruario1.webp",
       "/img/mostruario2.webp",
-    ];
-    preload.forEach((src) => {
+    ],
+    []
+  );
+
+  useEffect(() => {
+    preloadImages.forEach((src) => {
       const img = new Image();
       img.src = src;
     });
-  }, []);
+  }, [preloadImages]);
 
   return (
     <section className="empresa-section">
@@ -111,14 +112,10 @@ const EmpresaSection = () => {
             GRUPO TECNOAGIL
           </h1>
           <p ref={refP} className={`fade-text fade-${stateP}`}>
-            TRANSFORMANDO VIDAS HÁ MAIS DE 18 ANOS COM SEGURANÇA, TECNOLOGIA E
-            AGILIDADE
+            TRANSFORMANDO VIDAS HÁ MAIS DE 18 ANOS COM SEGURANÇA, TECNOLOGIA E AGILIDADE
           </p>
           <a href="#contato">
-            <button
-              ref={refBtn}
-              className={`empresa-btn fade-text fade-${stateBtn}`}
-            >
+            <button ref={refBtn} className={`empresa-btn fade-text fade-${stateBtn}`}>
               Entrar em Contato
             </button>
           </a>
@@ -126,47 +123,41 @@ const EmpresaSection = () => {
 
         {/* Imagens flutuantes */}
         <div className="empresa-floating">
-          {/* Hero SEM lazy (primeira imagem principal) */}
+          {/* Hero SEM lazy */}
           <div
             ref={(el) => (cardsRef.current[0] = el)}
             className={`empresa-card ${destaque === 0 ? "ativo" : ""}`}
-            style={{
-              top: "0%",
-              left: "20%",
-              zIndex: destaque === 0 ? 3 : 1,
-            }}
+            style={{ top: "0%", left: "20%", zIndex: destaque === 0 ? 3 : 1 }}
             onClick={(e) => {
               e.stopPropagation();
               setDestaque(0);
             }}
           >
-            <img
-              src={imagem3}
-              alt="Monitoramento"
-              className="hero-img"
-              loading="eager"
-            />
+            <img src={imagem3} alt="Monitoramento" className="hero-img" loading="eager" />
           </div>
 
           {/* Outras imagens com Lazy */}
-          {[imagem2, imagem1].map((img, i) => (
-            <div
-              key={i + 1}
-              ref={(el) => (cardsRef.current[i + 1] = el)}
-              className={`empresa-card ${destaque === i + 1 ? "ativo" : ""}`}
-              style={{
-                top: `${(i + 1) * 20}%`,
-                left: `${35 + i * 15}%`,
-                zIndex: destaque === i + 1 ? 3 : 1,
-              }}
-              onClick={(e) => {
-                e.stopPropagation();
-                setDestaque(i + 1);
-              }}
-            >
-              <LazyImage src={img} alt={`Câmera ${i + 2}`} />
-            </div>
-          ))}
+          {[imagem2, imagem1].map((img, i) => {
+            const index = i + 1;
+            return (
+              <div
+                key={index}
+                ref={(el) => (cardsRef.current[index] = el)}
+                className={`empresa-card ${destaque === index ? "ativo" : ""}`}
+                style={{
+                  top: `${index * 20}%`,
+                  left: `${35 + i * 15}%`,
+                  zIndex: destaque === index ? 3 : 1,
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setDestaque(index);
+                }}
+              >
+               <LazyImage src={img} alt={`Câmera ${index + 1}`} priority />
+              </div>
+            );
+          })}
         </div>
       </div>
 

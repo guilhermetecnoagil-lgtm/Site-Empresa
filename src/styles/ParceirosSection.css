@@ -3,41 +3,51 @@
 /* Seção geral */
 .parceiros-section {
   background-color: var(--bg-parceiros);
-  padding: 10px;
+  padding: 3rem 1rem;
   width: 100vw;
- 
   position: relative;
   display: flex;
-  align-items: center; /* Centraliza verticalmente o conteúdo */
+  flex-direction: column; /* Coloca título em cima e carrossel abaixo */
+  align-items: center;
+  text-align: center;
+}
+
+/* Título da seção */
+.parceiros-titulo {
+  font-size: 2rem;
+  
+  /* 🔥 sombra para destacar */
+  text-shadow: 0 2px 6px rgba(189, 0, 0, 0.8);
+  font-weight: bold;
+  margin-bottom: 2rem;
+  color: #ff0000;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 /* Faixa visível */
 .parceiros-carousel {
   width: 100%;
-  
   position: relative;
-  height: clamp(100px, 14vw, 140px); /* Aumentado */
+  height: clamp(100px, 14vw, 140px);
   display: flex;
   align-items: center;
+  overflow: hidden;
 }
 
 /* Trilho com logos */
 .parceiros-track {
   display: flex;
   gap: clamp(20px, 6vw, 60px);
-  animation: parceiros-marquee-left 40s linear infinite; /* Velocidade aumentada */
+  animation: parceiros-marquee-left 40s linear infinite;
   will-change: transform;
   align-items: center;
 }
 
 /* Keyframes de animação contínua */
 @keyframes parceiros-marquee-left {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 /* Logos individuais */
@@ -47,11 +57,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: clamp(140px, 20vw, 260px); /* Aumentado */
+  min-width: clamp(140px, 20vw, 260px);
 }
 
 .parceiro img {
-  height: clamp(60px, 8vw, 90px); /* Aumentado */
+  height: clamp(60px, 8vw, 90px);
   max-width: 100%;
   object-fit: contain;
   filter: grayscale(100%);
@@ -67,44 +77,22 @@
 
 /* ===================== Breakpoints ===================== */
 @media (max-width: 1024px) {
-  .parceiros-carousel {
-    height: clamp(72px, 14vw, 100px);
-  }
-  .parceiros-track {
-    gap: clamp(16px, 5vw, 40px);
-  }
+  .parceiros-carousel { height: clamp(72px, 14vw, 100px); }
+  .parceiros-track { gap: clamp(16px, 5vw, 40px); }
 }
 @media (max-width: 900px) {
-  .parceiros-track {
-    gap: clamp(14px, 4.5vw, 32px);
-  }
-  .parceiro {
-    min-width: clamp(120px, 24vw, 200px);
-  }
+  .parceiros-track { gap: clamp(14px, 4.5vw, 32px); }
+  .parceiro { min-width: clamp(120px, 24vw, 200px); }
 }
 @media (max-width: 600px) {
-  .parceiros-section {
-    padding: 32px 0;
-  }
-  .parceiros-carousel {
-    height: clamp(64px, 16vw, 88px);
-  }
-  .parceiros-track {
-    gap: clamp(12px, 4vw, 24px);
-    padding: 0 16px;
-  }
-  .parceiro {
-    padding: 0 16px;
-    min-width: clamp(100px, 40vw, 160px);
-  }
-  .parceiro img {
-    height: clamp(48px, 12vw, 80px); /* Aumentado também no mobile */
-  }
+  .parceiros-section { padding: 32px 0; }
+  .parceiros-carousel { height: clamp(64px, 16vw, 88px); }
+  .parceiros-track { gap: clamp(12px, 4vw, 24px); padding: 0 16px; }
+  .parceiro { padding: 0 16px; min-width: clamp(100px, 40vw, 160px); }
+  .parceiro img { height: clamp(48px, 12vw, 80px); }
 }
 
 /* ===================== Acessibilidade ===================== */
 @media (prefers-reduced-motion: reduce) {
-  .parceiros-track {
-    animation: none;
-  }
+  .parceiros-track { animation: none; }
 }

@@ -1,0 +1,42 @@
+.curriculum-container {
+  text-align: center;
+  margin-top: 60px;
+}
+
+.curriculum-button {
+  padding: 14px 28px;
+  background-color: red;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  animation: pulse 5s infinite;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.curriculum-button:hover {
+  background-color: darkred;
+  transform: scale(1.05);
+}
+
+.curriculum-subtext {
+  margin-top: 12px;
+  font-size: 15px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* Animação de destaque */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}

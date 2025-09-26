@@ -1,9 +1,24 @@
-import React from "react";
+import React, { memo } from "react";
 import "../styles/QualidadeSection.css";
 import imagemPainel from "../img/Logo.webp";
 
 // Ícones
 import { FaUserTie, FaCarSide, FaMedal } from "react-icons/fa";
+
+// 🔹 Componente otimizado para cada “dado”
+const Dado = memo(({ Icon, valor, label }) => (
+  <div className="dado">
+    <Icon className="dado-icon" aria-hidden="true" />
+    <h3>{valor}</h3>
+    <p>{label}</p>
+  </div>
+));
+
+const dados = [
+  { Icon: FaUserTie, valor: "200", label: "Colaboradores" },
+  { Icon: FaCarSide, valor: "100", label: "Veículos" },
+  { Icon: FaMedal, valor: "30", label: "Conquistas" },
+];
 
 const QualidadeSection = () => {
   return (
@@ -19,27 +34,20 @@ const QualidadeSection = () => {
         </p>
 
         <div className="qualidade-dados">
-          <div className="dado">
-            <FaUserTie className="dado-icon" />
-            <h3>200</h3>
-            <p>Colaboradores</p>
-          </div>
-          <div className="dado">
-            <FaCarSide className="dado-icon" />
-            <h3>100</h3>
-            <p>Veículos</p>
-          </div>
-          <div className="dado">
-            <FaMedal className="dado-icon" />
-            <h3>30</h3>
-            <p>Conquistas</p>
-          </div>
+          {dados.map((dado, i) => (
+            <Dado key={i} {...dado} />
+          ))}
         </div>
       </div>
 
       <div className="qualidade-imagem">
         <div className="qualidade-card">
-          <img src={imagemPainel} alt="Painel de segurança" />
+          <img
+            src={imagemPainel}
+            alt="Painel de segurança"
+            loading="lazy"
+            decoding="async"
+          />
           <div className="texto-card">
             <h3>GRUPO TECNOAGIL</h3>
             <p>
@@ -53,4 +61,4 @@ const QualidadeSection = () => {
   );
 };
 
-export default QualidadeSection;
+export default memo(QualidadeSection);

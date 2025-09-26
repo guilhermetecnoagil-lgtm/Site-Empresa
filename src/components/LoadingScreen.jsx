@@ -8,15 +8,13 @@ export default function LoadingScreen({ isExiting }) {
       <div className="logo-container">
         <img src={Logo} alt="Logo Tecnoagil" className="logo" />
       </div>
-
       <div className="loading-indicator">
         <span></span>
         <span></span>
         <span></span>
       </div>
-
       <p className="loading-message">
-       Preparando tudo para sua experiência... o primeiro carregamento pode levar alguns instantes.
+        Preparando tudo para sua experiência... <br></br>o carregamento pode levar alguns instantes.
       </p>
     </div>
   );
